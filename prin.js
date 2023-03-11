@@ -1,9 +1,18 @@
 let works = window.localStorage.getItem("tableau");
 const body = document.querySelector("body");
+const log = document.getElementById("login");
+const information = document.getElementById("info");
 const sectionImages = document.querySelector(".gallery");
 const allImg = [];
 const allDiv = [];
+// style background
 body.style.backgroundColor = "#E5E5E5";
+// style login lien et info
+log.style.textDecoration = "none";
+information.style.textDecoration = "none";
+information.style.color = "black";
+log.style.color = "black";
+
 async function callImages() {
 	if (works === null) {
 		await fetch("http://localhost:5678/api/works").then((response) =>
@@ -91,9 +100,42 @@ const btnAppart = creatCategories.getElementsByTagName("button")[1];
 const btnHotel = creatCategories.getElementsByTagName("button")[2];
 const btnAll = document.createElement("button");
 creatCategories.appendChild(btnAll);
+//Bouton Tous
 btnAll.textContent = "Tous";
 btnAll.style.order = -1;
+btnAll.style.border = "2px solid #1D6154";
+btnAll.style.color = "#1D6154";
+btnAll.style.width = "8rem";
+btnAll.style.height = "2rem";
+btnAll.style.borderRadius = "20px";
+btnAll.style.fontSize = "larger";
+btnAll.style.backgroundColor = "#E5E5E5";
+//bouton Objets
+btnObject.style.border = "2px solid #1D6154";
+btnObject.style.color = "#1D6154";
+btnObject.style.width = "8rem";
+btnObject.style.height = "2rem";
+btnObject.style.borderRadius = "20px";
+btnObject.style.fontSize = "larger";
+btnObject.style.backgroundColor = "#E5E5E5";
+//bouton Appart
+btnAppart.style.border = "2px solid #1D6154";
+btnAppart.style.color = "#1D6154";
+btnAppart.style.width = "8rem";
+btnAppart.style.height = "2rem";
+btnAppart.style.borderRadius = "20px";
+btnAppart.style.fontSize = "larger";
+btnAppart.style.backgroundColor = "#E5E5E5";
+//bouton Hotel
+btnHotel.style.border = "2px solid #1D6154";
+btnHotel.style.color = "#1D6154";
+btnHotel.style.width = "auto";
+btnHotel.style.height = "2rem";
+btnHotel.style.borderRadius = "20px";
+btnHotel.style.fontSize = "larger";
+btnHotel.style.backgroundColor = "#E5E5E5";
 
+// creation click
 btnAll.addEventListener("click", () => {
 	Allsee();
 });
@@ -106,9 +148,40 @@ btnAppart.addEventListener("click", () => {
 btnHotel.addEventListener("click", () => {
 	hotelSee();
 });
-
-//  creation d'un autre btn qui a comme function 'menu'
-// creation d'un objet Set pour chaque categorie
+//creation hover
+btnAll.addEventListener("mouseover", (event) => {
+	event.target.style.backgroundColor = "#1D6154";
+	event.target.style.color = "#E5E5E5";
+});
+btnObject.addEventListener("mouseover", (event) => {
+	event.target.style.backgroundColor = "#1D6154";
+	event.target.style.color = "#E5E5E5";
+});
+btnAppart.addEventListener("mouseover", (event) => {
+	event.target.style.backgroundColor = "#1D6154";
+	event.target.style.color = "#E5E5E5";
+});
+btnHotel.addEventListener("mouseover", (event) => {
+	event.target.style.backgroundColor = "#1D6154";
+	event.target.style.color = "#E5E5E5";
+});
+// creation mouseout
+btnAll.addEventListener("mouseout", (event) => {
+	event.target.style.backgroundColor = "#E5E5E5";
+	event.target.style.color = "#1D6154";
+});
+btnObject.addEventListener("mouseout", (event) => {
+	event.target.style.backgroundColor = "#E5E5E5";
+	event.target.style.color = "#1D6154";
+});
+btnAppart.addEventListener("mouseout", (event) => {
+	event.target.style.backgroundColor = "#E5E5E5";
+	event.target.style.color = "#1D6154";
+});
+btnHotel.addEventListener("mouseout", (event) => {
+	event.target.style.backgroundColor = "#E5E5E5";
+	event.target.style.color = "#1D6154";
+});
 console.log(allImg);
 console.log(allDiv);
 const titreDesDiv = document.querySelectorAll("h3");
@@ -162,7 +235,7 @@ function cacheElementsObject() {
 	myImgEleven.style.display = "none";
 	//afficher
 	myDivOne.style.display = "flex";
-	myImgFive.style.display = "flex";
+	myDivFive.style.display = "flex";
 	myImgOne.style.display = "flex";
 	myImgFive.style.display = "flex";
 }
