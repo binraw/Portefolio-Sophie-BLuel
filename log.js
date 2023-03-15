@@ -10,9 +10,11 @@ information.style.color = "black";
 log.style.color = "black";
 memo.style.textDecoration = "none";
 memo.style.color = "black";
-
+/* recuperation d'une fonction qui ecoute l'envoi du form avec enregistrement
+de l'email et passeword et transformer en json puis recuperation de ses donnes 
+puis changement en json puis stoker ses donnees dans acces puis envoie sur l'autre page avec acces token*/
 form.addEventListener("submit", (event) => {
-	event.preventDefault(); // Empêche la soumission par défaut du formulaire
+	event.preventDefault();
 
 	const emailValue = document.getElementById("email").value;
 	const password = document.getElementById("userPasseword").value;
@@ -29,11 +31,12 @@ form.addEventListener("submit", (event) => {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			// Stocker le jeton d'accès dans le stockage local ou les cookies
 			localStorage.setItem("access_token", data.access_token);
-			// Rediriger l'utilisateur vers la page d'accueil
+			// sessionStorage.setItem("access_token", data.access_token);
+
 			window.location.href =
-				"/Portfolio-architecte-sophie-bluel/FrontEnd/index.html";
+				"/Portfolio-architecte-sophie-bluel/FrontEnd/index.html?access_token=" +
+				data.access_token;
 		})
 		.catch((error) => console.error(error));
 });
