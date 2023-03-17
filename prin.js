@@ -239,6 +239,36 @@ const accessToken = urlParams.get("access_token");
 if (accessToken != null) {
 	console.log("bonjour sophie");
 	console.log(localStorage);
+	const header = document.querySelector("header");
+	const navModification = document.createElement("div");
+	header.appendChild(navModification);
+	navModification.style.width = "100vw";
+	navModification.style.order = "-1";
+	navModification.style.display = "flex";
+	navModification.style.justifyContent = "center";
+	navModification.style.gap = "10px";
+	navModification.style.background = "black";
+	navModification.style.height = "4rem";
+
+	header.style.display = "flex";
+	header.style.flexWrap = "wrap";
+	header.style.marginTop = "0";
+	header.style.gap = "20px";
+
+	const editionMode = document.createElement("button");
+	editionMode.textContent = "Mode édition";
+	const publication = document.createElement("button");
+	publication.textContent = "publier les changements";
+	editionMode.style.color = "white";
+	editionMode.style.backgroundColor = "black";
+	editionMode.style.border = "0px";
+	editionMode.style.margin = "10px";
+	publication.style.border = "0px";
+	publication.style.borderRadius = "60px";
+	publication.style.padding = "10px";
+	publication.style.margin = "10px";
+
+	navModification.append(editionMode, publication);
 } else {
 	console.log(localStorage);
 	console.log("non non");
