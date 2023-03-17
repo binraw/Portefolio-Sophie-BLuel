@@ -239,6 +239,7 @@ const accessToken = urlParams.get("access_token");
 if (accessToken != null) {
 	console.log("bonjour sophie");
 	console.log(localStorage);
+	// --------- barre modification ----------------
 	const header = document.querySelector("header");
 	const navModification = document.createElement("div");
 	header.appendChild(navModification);
@@ -254,8 +255,11 @@ if (accessToken != null) {
 	header.style.flexWrap = "wrap";
 	header.style.marginTop = "0";
 	header.style.gap = "20px";
-
+	header.style.justifyContent = "space-around";
+	const icon = document.createElement("i");
+	icon.classList.add("fa", "fa-edit");
 	const editionMode = document.createElement("button");
+
 	editionMode.textContent = "Mode édition";
 	const publication = document.createElement("button");
 	publication.textContent = "publier les changements";
@@ -266,9 +270,57 @@ if (accessToken != null) {
 	publication.style.border = "0px";
 	publication.style.borderRadius = "60px";
 	publication.style.padding = "10px";
-	publication.style.margin = "10px";
-
+	publication.style.margin = "15px";
+	editionMode.appendChild(icon);
+	editionMode.style.display = "flex";
+	editionMode.style.alignItems = "center";
+	editionMode.style.gap = "10px";
+	icon.style.order = "-1";
 	navModification.append(editionMode, publication);
+
+	//----------- description
+	const description = document.getElementById("introduction");
+	const divForButton = document.createElement("div");
+	const btnModifIntro = document.createElement("button");
+	description.style.display = "flex";
+	description.style.flexWrap = "wrap";
+	btnModifIntro.textContent = "modifier";
+	divForButton.style.width = "100%";
+	btnModifIntro.style.display = "flex";
+	btnModifIntro.style.width = "5rem";
+	btnModifIntro.style.marginLeft = "3rem";
+	btnModifIntro.style.alignSelf = "end";
+	btnModifIntro.style.border = "0";
+	btnModifIntro.style.gap = "10px";
+	const iconDescrip = document.createElement("i");
+	iconDescrip.classList.add("fa", "fa-edit");
+	iconDescrip.style.order = "-1";
+	btnModifIntro.appendChild(iconDescrip);
+
+	btnModifIntro.style.backgroundColor = "rgb(229, 229, 229)";
+	divForButton.appendChild(btnModifIntro);
+	description.appendChild(divForButton);
+
+	//------------mes Projets -----------
+	const modification = document.getElementById("projet");
+	modification.style.display = "flex";
+	modification.style.justifyContent = "center";
+	const iconElement = document.createElement("i");
+	iconElement.classList.add("fa", "fa-edit");
+
+	const btnModif = document.createElement("button");
+	btnModif.textContent = "modifier";
+	btnModif.style.width = "5rem";
+	btnModif.style.marginLeft = "2rem";
+	btnModif.style.border = "0";
+	btnModif.style.backgroundColor = "rgb(229, 229, 229)";
+
+	btnModif.appendChild(iconElement);
+	btnModif.style.display = "flex";
+	btnModif.style.alignItems = "center";
+	btnModif.style.gap = "10px";
+	iconElement.style.order = "-1";
+	modification.append(btnModif);
 } else {
 	console.log(localStorage);
 	console.log("non non");
