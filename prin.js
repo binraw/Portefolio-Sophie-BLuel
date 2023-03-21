@@ -13,13 +13,14 @@ information.style.color = "black";
 log.style.color = "black";
 
 let data = window.localStorage.getItem("filter");
+const creatCategories = document.querySelector(".categories");
+const creatCateId = 0;
 
 async function getCategories() {
 	if (data === null) {
 		await fetch(`http://localhost:5678/api/categories`)
 			.then((response) =>
 				response.json().then((data) => {
-					const creatCategories = document.querySelector(".categories");
 					const valuesData = JSON.stringify(data);
 					window.localStorage.setItem("filter", valuesData);
 					data.forEach((cate) => {
@@ -28,7 +29,6 @@ async function getCategories() {
 						creatCate.textContent = cate.name;
 						const idCate = cate.id;
 						creatCate.setAttribute("id", "projet" + idCate);
-
 						creatCategories.style.display = "flex";
 						creatCategories.style.width = "50%";
 						creatCategories.style.marginLeft = "auto";
@@ -42,6 +42,25 @@ async function getCategories() {
 						creatCate.style.borderRadius = "20px";
 						creatCate.style.fontSize = "larger";
 						creatCate.style.backgroundColor = "#E5E5E5";
+						//eventListener
+						creatCate.addEventListener("click", () => {
+							sectionImages.innerHTML = "";
+							if (idCate == "1") {
+								newfilterObjet.forEach((img) => {
+									sectionImages.appendChild(img);
+								});
+							} else if (idCate == "2") {
+								newfilterAppart.forEach((img) => {
+									sectionImages.appendChild(img);
+								});
+							} else if (idCate == "3") {
+								sectionImages.innerHTML = "";
+								newfilterRestaurant.forEach((img) => {
+									sectionImages.appendChild(img);
+								});
+							}
+						});
+
 						//creation hover
 						creatCate.addEventListener("mouseover", (event) => {
 							event.target.style.backgroundColor = "#1D6154";
@@ -80,6 +99,26 @@ async function getCategories() {
 			creatCate.style.borderRadius = "20px";
 			creatCate.style.fontSize = "larger";
 			creatCate.style.backgroundColor = "#E5E5E5";
+			// event click
+
+			creatCate.addEventListener("click", () => {
+				sectionImages.innerHTML = "";
+				if (idCate == "1") {
+					newfilterObjet.forEach((img) => {
+						sectionImages.appendChild(img);
+					});
+				} else if (idCate == "2") {
+					newfilterAppart.forEach((img) => {
+						sectionImages.appendChild(img);
+					});
+				} else if (idCate == "3") {
+					sectionImages.innerHTML = "";
+					newfilterRestaurant.forEach((img) => {
+						sectionImages.appendChild(img);
+					});
+				}
+			});
+
 			//creation hover
 			creatCate.addEventListener("mouseover", (event) => {
 				event.target.style.backgroundColor = "#1D6154";
@@ -93,7 +132,7 @@ async function getCategories() {
 		});
 	}
 }
-
+const createAll = [];
 async function callImages() {
 	if (works === null) {
 		await fetch("http://localhost:5678/api/works")
@@ -108,19 +147,17 @@ async function callImages() {
 						creatImg.textContent = img.title;
 						creatImg.src = img.imageUrl;
 						const idImg = img.categoryId;
+						const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
 						creatDiv.setAttribute("id", "projet" + idImg);
 						sectionImages.appendChild(creatDiv);
 						creatDiv.appendChild(creatImg);
 						creatDiv.appendChild(title);
-						allImg.push(creatImg.id);
-						allDiv.push(img.title);
-						if (creatDiv.getAttribute("id") === "projet1") {
+						createAll.push(creatDiv);
+						if (creatDivId == "projet1") {
 							newfilterObjet.push(creatDiv);
-						}
-						if (creatDiv.getAttribute("id") === "projet2") {
+						} else if (creatDivId == "projet2") {
 							newfilterAppart.push(creatDiv);
-						}
-						if (creatDiv.getAttribute("id") === "projet3") {
+						} else if (creatDivId == "projet3") {
 							newfilterRestaurant.push(creatDiv);
 						}
 					});
@@ -136,20 +173,21 @@ async function callImages() {
 			const title = document.createElement("h3");
 			const idImg = img.categoryId;
 			creatDiv.setAttribute("id", "projet" + idImg);
-
 			title.textContent = img.title;
 			creatImg.src = img.imageUrl;
 			title.style.marginTop = "1rem";
 			sectionImages.appendChild(creatDiv);
 			creatDiv.appendChild(creatImg);
 			creatDiv.appendChild(title);
-			if (creatDiv.getAttribute("id") === "projet1") {
+			createAll.push(creatDiv);
+
+			const creatDivId = creatDiv.getAttribute("id");
+
+			if (creatDivId == "projet1") {
 				newfilterObjet.push(creatDiv);
-			}
-			if (creatDiv.getAttribute("id") === "projet2") {
+			} else if (creatDivId == "projet2") {
 				newfilterAppart.push(creatDiv);
-			}
-			if (creatDiv.getAttribute("id") === "projet3") {
+			} else if (creatDivId == "projet3") {
 				newfilterRestaurant.push(creatDiv);
 			}
 		});
@@ -157,14 +195,12 @@ async function callImages() {
 }
 
 const newfilterObjet = [];
+
 const newfilterAppart = [];
 const newfilterRestaurant = [];
 
-getCategories();
-callImages();
-
 //Création des buttons et effect click isoler
-const creatCategories = document.querySelector(".categories");
+
 const btnObject = creatCategories.getElementsByTagName("button")[0];
 const btnAppart = creatCategories.getElementsByTagName("button")[1];
 const btnHotel = creatCategories.getElementsByTagName("button")[2];
@@ -180,46 +216,18 @@ btnAll.style.width = "8rem";
 btnAll.style.borderRadius = "20px";
 btnAll.style.fontSize = "larger";
 btnAll.style.backgroundColor = "#E5E5E5";
+callImages();
+getCategories();
 
 // // creation click
 btnAll.addEventListener("click", () => {
 	sectionImages.innerHTML = "";
 
-	// Ajoutez les éléments de newfilterAppart à la section d'images
-	newfilterObjet.forEach((img) => {
-		sectionImages.appendChild(img);
-	});
-	newfilterAppart.forEach((img) => {
-		sectionImages.appendChild(img);
-	});
-	newfilterRestaurant.forEach((img) => {
+	createAll.forEach((img) => {
 		sectionImages.appendChild(img);
 	});
 });
-btnObject.addEventListener("click", () => {
-	sectionImages.innerHTML = "";
 
-	//  les éléments de newfilterObjet à la section d'images
-	newfilterObjet.forEach((img) => {
-		sectionImages.appendChild(img);
-	});
-});
-btnAppart.addEventListener("click", () => {
-	sectionImages.innerHTML = "";
-
-	//  les éléments de newfilterAppart à la section d'images
-	newfilterAppart.forEach((img) => {
-		sectionImages.appendChild(img);
-	});
-});
-btnHotel.addEventListener("click", () => {
-	sectionImages.innerHTML = "";
-
-	//  les éléments denewfilterRestaurant à la section d'images
-	newfilterRestaurant.forEach((img) => {
-		sectionImages.appendChild(img);
-	});
-});
 //creation hover
 btnAll.addEventListener("mouseover", (event) => {
 	event.target.style.backgroundColor = "#1D6154";
@@ -233,8 +241,9 @@ btnAll.addEventListener("mouseout", (event) => {
 });
 
 // controle de la connexion réaliser (savoir si le token est present)
-const urlParams = new URLSearchParams(window.location.search);
-const accessToken = urlParams.get("access_token");
+// const urlParams = new URLSearchParams(window.location.search);
+// const accessToken = urlParams.get("access_token");
+const accessToken = localStorage.getItem("access_token");
 
 if (accessToken != null) {
 	console.log("bonjour sophie");

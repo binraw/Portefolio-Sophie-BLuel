@@ -31,7 +31,8 @@ form.addEventListener("submit", (event) => {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			localStorage.setItem("access_token", data.access_token);
+			localStorage.setItem("access_token", data.token);
+			console.log(data.access_token);
 			// sessionStorage.setItem("access_token", data.access_token);
 
 			window.location.href =
