@@ -3,6 +3,7 @@ const body = document.querySelector("body");
 const log = document.getElementById("login");
 const information = document.getElementById("info");
 const sectionImages = document.querySelector(".gallery");
+const sectionImagesModale = document.getElementById("gallery");
 
 // style background
 body.style.backgroundColor = "#E5E5E5";
@@ -212,7 +213,6 @@ btnAll.style.order = -1;
 btnAll.style.border = "2px solid #1D6154";
 btnAll.style.color = "#1D6154";
 btnAll.style.width = "8rem";
-
 btnAll.style.borderRadius = "20px";
 btnAll.style.fontSize = "larger";
 btnAll.style.backgroundColor = "#E5E5E5";
@@ -239,6 +239,52 @@ btnAll.addEventListener("mouseout", (event) => {
 	event.target.style.backgroundColor = "#E5E5E5";
 	event.target.style.color = "#1D6154";
 });
+
+// creation de la fonction pour appeler les img dans la modale
+const allImgModal = [];
+async function callImagesModale() {
+	await fetch("http://localhost:5678/api/works").then((response) =>
+		response.json().then((works) => {
+			works.forEach((img) => {
+				const creatImg = document.createElement("img");
+				const creatDiv = document.createElement("div");
+				const title = document.createElement("h3");
+				title.textContent = "editer";
+				title.style.marginLeft = "1rem";
+
+				creatImg.src = img.imageUrl;
+				const idImg = img.categoryId;
+				const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
+				creatDiv.setAttribute("id", "projet" + idImg);
+				creatImg.style.width = "4rem";
+				creatImg.style.height = "6rem";
+				creatImg.style.margin = ".3rem";
+				creatDiv.appendChild(creatImg);
+				creatDiv.appendChild(title);
+				allImgModal.push(creatDiv);
+				console.log(creatDiv);
+			});
+		})
+	);
+}
+callImagesModale();
+//creation function pour ouverture modale
+const modale = document.getElementById("modal1");
+const btnCloseModale = document.getElementById("close");
+
+const openModal = function () {
+	modale.style.display = null;
+	sectionImagesModale.innerHTML = "";
+
+	allImgModal.forEach((img) => {
+		sectionImagesModale.appendChild(img);
+	});
+};
+const closeModal = function () {
+	modale.style.display = "none";
+};
+
+btnCloseModale.addEventListener("click", closeModal);
 
 // controle de la connexion réaliser (savoir si le token est present)
 // const urlParams = new URLSearchParams(window.location.search);
@@ -286,6 +332,12 @@ if (accessToken != null) {
 	editionMode.style.gap = "10px";
 	icon.style.order = "-1";
 	navModification.append(editionMode, publication);
+	editionMode.addEventListener("click", openModal);
+	window.onclick = function (event) {
+		if (event.target == modale) {
+			modale.style.display = "none";
+		}
+	};
 
 	//----------- description
 	const description = document.getElementById("introduction");

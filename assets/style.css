@@ -262,3 +262,74 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em;
 }
+
+.modal {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+}
+.modal-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: auto;
+	width: 600px;
+	height: 600px;
+	padding: 20px;
+	background-color: white;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vh - 20px);
+}
+/* .elements-modal {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+} */
+#close {
+	/* #E5E5E5 */
+	font-size: 0;
+	padding: 0;
+	width: 20px;
+	height: 20px;
+	border: none;
+	margin-left: auto;
+	background-color: white;
+}
+
+#close::before {
+	content: "X";
+	font-size: 16px;
+}
+#ajout {
+	margin-top: auto;
+	border: 2px solid #1d6154;
+	color: white;
+	width: 10rem;
+	height: 3rem;
+	border-radius: 20px;
+	font-size: larger;
+	background-color: #1d6154;
+}
+#suppr {
+	color: red;
+	border: 0px;
+	background-color: white;
+	margin-top: auto;
+}
+
+#gallery {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+
+	border-bottom: 1px solid grey;
+	padding: 1rem;
+	width: 50%;
+}
