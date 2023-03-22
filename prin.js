@@ -1,6 +1,7 @@
 let works = window.localStorage.getItem("tableau");
 const body = document.querySelector("body");
 const log = document.getElementById("login");
+const logout = document.getElementById("logout");
 const information = document.getElementById("info");
 const sectionImages = document.querySelector(".gallery");
 const sectionImagesModale = document.getElementById("gallery");
@@ -9,9 +10,12 @@ const sectionImagesModale = document.getElementById("gallery");
 body.style.backgroundColor = "#E5E5E5";
 // style login lien et info
 log.style.textDecoration = "none";
+logout.style.textDecoration = "none";
+logout.style.display = "none";
 information.style.textDecoration = "none";
 information.style.color = "black";
 log.style.color = "black";
+logout.style.color = "black";
 
 let data = window.localStorage.getItem("filter");
 const creatCategories = document.querySelector(".categories");
@@ -23,12 +27,14 @@ function buildContenerCategories(e) {
 	e.style.marginRight = "auto";
 	e.style.marginBottom = "1rem";
 	e.style.justifyContent = "space-around";
+	e.style.alignItems = "center";
 }
 
 function buildBtnCategorie(e) {
 	e.style.border = "2px solid #1D6154";
 	e.style.color = "#1D6154";
-	e.style.width = "8rem";
+	e.style.width = "auto";
+	e.style.padding = ".5rem";
 	e.style.borderRadius = "20px";
 	e.style.fontSize = "larger";
 	e.style.backgroundColor = "#E5E5E5";
@@ -246,87 +252,18 @@ function buildIcon(e) {
 	e.setAttribute("id", "delete");
 }
 
-async function callImagesModale() {
-	await fetch("http://localhost:5678/api/works").then((response) =>
-		response.json().then((works) => {
-			works.forEach((img) => {
-				const creatImg = document.createElement("img");
-				const creatDiv = document.createElement("div");
-				const title = document.createElement("h3");
-				title.textContent = "editer";
-				title.style.marginLeft = "1rem";
-				creatImg.src = img.imageUrl;
-				const idImg = img.categoryId;
-				creatDiv.id = "projet" + idImg;
-				// const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
-				creatDiv.setAttribute("id", "projet" + idImg);
-				creatImg.style.width = "4rem";
-				creatImg.style.height = "6rem";
-				creatImg.style.margin = ".3rem";
-				creatDiv.style.position = "relative";
-				const iconPoubelle = document.createElement("i");
-				buildIcon(iconPoubelle);
-				creatDiv.appendChild(iconPoubelle);
-				creatDiv.appendChild(creatImg);
-				creatDiv.appendChild(title);
-				allImgModal.push(creatDiv);
-				//click pour suppr l'image
-				iconPoubelle.addEventListener("click", () => {
-					const id = creatDiv.id;
-					supprElement(id);
-					creatDiv.remove();
-				});
-			});
-		})
-	);
-}
-callImagesModale();
-// const allIconDelete = document.getElementsByClassName("meterial");
-// console.log(allIconDelete);
-//creation function pour ouverture modale
-const modale = document.getElementById("modal1");
-const btnCloseModale = document.getElementById("close");
-
-const openModal = function () {
-	modale.style.display = null;
-	sectionImagesModale.innerHTML = "";
-
-	allImgModal.forEach((img) => {
-		sectionImagesModale.appendChild(img);
-	});
-};
-const closeModal = function () {
-	modale.style.display = "none";
-};
-
-btnCloseModale.addEventListener("click", closeModal);
-
-//fonction pour la suppression des elements
-// console.log(supprElement());
-async function supprElement(id) {
-	await fetch(`http://localhost:5678/api/works/${id}`, {
-		method: "DELETE",
-
-		headers: { "Content-Type": "application/json" },
-	})
-		.then((response) => {
-			if (response.ok) {
-				console.log("Suppression effectuée avec succès !");
-			} else {
-				console.log("Une erreur s'est produite lors de la suppression.");
-			}
-		})
-		.catch((error) => {
-			console.log("Une erreur s'est produite: ", error);
-		});
-}
-
 // controle de la connexion réaliser (savoir si le token est present)
 // const urlParams = new URLSearchParams(window.location.search);
 // const accessToken = urlParams.get("access_token");
 const accessToken = localStorage.getItem("access_token");
 
 if (accessToken != null) {
+	creatCategories.style.display = "none";
+	log.style.display = "none";
+	logout.style.display = null;
+	logout.addEventListener("click", () => {
+		localStorage.clear();
+	});
 	console.log("bonjour sophie");
 	console.log(localStorage);
 	// --------- barre modification ----------------
@@ -367,6 +304,80 @@ if (accessToken != null) {
 	editionMode.style.gap = "10px";
 	icon.style.order = "-1";
 	navModification.append(editionMode, publication);
+	async function callImagesModale() {
+		await fetch("http://localhost:5678/api/works").then((response) =>
+			response.json().then((works) => {
+				works.forEach((img) => {
+					const creatImg = document.createElement("img");
+					const creatDiv = document.createElement("div");
+					const title = document.createElement("h3");
+					title.textContent = "editer";
+					title.style.marginLeft = "1rem";
+					creatImg.src = img.imageUrl;
+					const idImg = img.categoryId;
+					creatDiv.id = "projet" + idImg;
+					// const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
+					creatDiv.setAttribute("id", "projet" + idImg);
+					creatImg.style.width = "4rem";
+					creatImg.style.height = "6rem";
+					creatImg.style.margin = ".3rem";
+					creatDiv.style.position = "relative";
+					const iconPoubelle = document.createElement("i");
+					buildIcon(iconPoubelle);
+					creatDiv.appendChild(iconPoubelle);
+					creatDiv.appendChild(creatImg);
+					creatDiv.appendChild(title);
+					allImgModal.push(creatDiv);
+					//click pour suppr l'image
+					iconPoubelle.addEventListener("click", () => {
+						const id = creatDiv.id;
+						supprElement(id);
+						creatDiv.remove();
+					});
+				});
+			})
+		);
+	}
+	callImagesModale();
+	// const allIconDelete = document.getElementsByClassName("meterial");
+	// console.log(allIconDelete);
+	//creation function pour ouverture modale
+	const modale = document.getElementById("modal1");
+	const btnCloseModale = document.getElementById("close");
+
+	const openModal = function () {
+		modale.style.display = null;
+		sectionImagesModale.innerHTML = "";
+
+		allImgModal.forEach((img) => {
+			sectionImagesModale.appendChild(img);
+		});
+	};
+	const closeModal = function () {
+		modale.style.display = "none";
+	};
+
+	btnCloseModale.addEventListener("click", closeModal);
+
+	//fonction pour la suppression des elements
+	// console.log(supprElement());
+	async function supprElement(id) {
+		await fetch(`http://localhost:5678/api/works/${id}`, {
+			method: "DELETE",
+
+			headers: { "Content-Type": "application/json" },
+		})
+			.then((response) => {
+				if (response.ok) {
+					console.log("Suppression effectuée avec succès !");
+				} else {
+					console.log("Une erreur s'est produite lors de la suppression.");
+				}
+			})
+			.catch((error) => {
+				console.log("Une erreur s'est produite: ", error);
+			});
+	}
 	editionMode.addEventListener("click", openModal);
 	// fonction qui permet le clic en dehors de la modale et la fermeture
 	window.onclick = function (event) {
