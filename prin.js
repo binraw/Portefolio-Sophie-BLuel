@@ -16,7 +16,23 @@ log.style.color = "black";
 let data = window.localStorage.getItem("filter");
 const creatCategories = document.querySelector(".categories");
 const creatCateId = 0;
+function buildContenerCategories(e) {
+	e.style.display = "flex";
+	e.style.width = "50%";
+	e.style.marginLeft = "auto";
+	e.style.marginRight = "auto";
+	e.style.marginBottom = "1rem";
+	e.style.justifyContent = "space-around";
+}
 
+function buildBtnCategorie(e) {
+	e.style.border = "2px solid #1D6154";
+	e.style.color = "#1D6154";
+	e.style.width = "8rem";
+	e.style.borderRadius = "20px";
+	e.style.fontSize = "larger";
+	e.style.backgroundColor = "#E5E5E5";
+}
 async function getCategories() {
 	if (data === null) {
 		await fetch(`http://localhost:5678/api/categories`)
@@ -30,19 +46,11 @@ async function getCategories() {
 						creatCate.textContent = cate.name;
 						const idCate = cate.id;
 						creatCate.setAttribute("id", "projet" + idCate);
-						creatCategories.style.display = "flex";
-						creatCategories.style.width = "50%";
-						creatCategories.style.marginLeft = "auto";
-						creatCategories.style.marginRight = "auto";
-						creatCategories.style.marginBottom = "1rem";
-						creatCategories.style.justifyContent = "space-around";
+						//contener Categorie
+						buildContenerCategories(creatCategories);
 						//boutons
-						creatCate.style.border = "2px solid #1D6154";
-						creatCate.style.color = "#1D6154";
-						creatCate.style.width = "8rem";
-						creatCate.style.borderRadius = "20px";
-						creatCate.style.fontSize = "larger";
-						creatCate.style.backgroundColor = "#E5E5E5";
+
+						buildBtnCategorie(creatCate);
 						//eventListener
 						creatCate.addEventListener("click", () => {
 							sectionImages.innerHTML = "";
@@ -86,22 +94,11 @@ async function getCategories() {
 			const idCate = cate.id;
 			creatCate.setAttribute("id", "projet" + idCate);
 			console.log(creatCate);
-
-			creatCategories.style.display = "flex";
-			creatCategories.style.width = "50%";
-			creatCategories.style.marginLeft = "auto";
-			creatCategories.style.marginRight = "auto";
-			creatCategories.style.marginBottom = "1rem";
-			creatCategories.style.justifyContent = "space-around";
+			//contener categorie
+			buildContenerCategories(creatCategories);
 			//boutons
-			creatCate.style.border = "2px solid #1D6154";
-			creatCate.style.color = "#1D6154";
-			creatCate.style.width = "8rem";
-			creatCate.style.borderRadius = "20px";
-			creatCate.style.fontSize = "larger";
-			creatCate.style.backgroundColor = "#E5E5E5";
+			buildBtnCategorie(creatCate);
 			// event click
-
 			creatCate.addEventListener("click", () => {
 				sectionImages.innerHTML = "";
 				if (idCate == "1") {
@@ -210,12 +207,7 @@ creatCategories.appendChild(btnAll);
 //Bouton Tous
 btnAll.textContent = "Tous";
 btnAll.style.order = -1;
-btnAll.style.border = "2px solid #1D6154";
-btnAll.style.color = "#1D6154";
-btnAll.style.width = "8rem";
-btnAll.style.borderRadius = "20px";
-btnAll.style.fontSize = "larger";
-btnAll.style.backgroundColor = "#E5E5E5";
+buildBtnCategorie(btnAll);
 callImages();
 getCategories();
 
@@ -242,6 +234,17 @@ btnAll.addEventListener("mouseout", (event) => {
 
 // creation de la fonction pour appeler les img dans la modale
 const allImgModal = [];
+function buildIcon(e) {
+	e.textContent = "delete";
+	e.classList.add("material-icons");
+	e.style.backgroundColor = "black";
+	e.style.color = "white";
+	e.style.fontSize = "16px";
+	e.style.position = "absolute";
+	e.style.top = "5px";
+	e.style.right = "5px";
+	e.setAttribute("id", "delete");
+}
 
 async function callImagesModale() {
 	await fetch("http://localhost:5678/api/works").then((response) =>
@@ -252,33 +255,27 @@ async function callImagesModale() {
 				const title = document.createElement("h3");
 				title.textContent = "editer";
 				title.style.marginLeft = "1rem";
-
 				creatImg.src = img.imageUrl;
 				const idImg = img.categoryId;
-				const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
+				creatDiv.id = "projet" + idImg;
+				// const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
 				creatDiv.setAttribute("id", "projet" + idImg);
 				creatImg.style.width = "4rem";
 				creatImg.style.height = "6rem";
 				creatImg.style.margin = ".3rem";
 				creatDiv.style.position = "relative";
-
 				const iconPoubelle = document.createElement("i");
-				iconPoubelle.textContent = "delete";
-				iconPoubelle.classList.add("material-icons");
-				iconPoubelle.style.backgroundColor = "black";
-				iconPoubelle.style.color = "white";
-				iconPoubelle.style.fontSize = "16px";
-				iconPoubelle.style.position = "absolute";
-				iconPoubelle.style.top = "5px";
-				iconPoubelle.style.right = "5px";
-				iconPoubelle.setAttribute("id", "delete");
-
+				buildIcon(iconPoubelle);
 				creatDiv.appendChild(iconPoubelle);
-
 				creatDiv.appendChild(creatImg);
 				creatDiv.appendChild(title);
 				allImgModal.push(creatDiv);
-				console.log(creatDiv);
+				//click pour suppr l'image
+				iconPoubelle.addEventListener("click", () => {
+					const id = creatDiv.id;
+					supprElement(id);
+					creatDiv.remove();
+				});
 			});
 		})
 	);
