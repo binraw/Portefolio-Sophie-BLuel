@@ -286,12 +286,7 @@ footer nav ul {
 	max-width: calc(100vw - 20px);
 	max-height: calc(100vh - 20px);
 }
-/* .elements-modal {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	
-} */
+
 #close {
 	/* #E5E5E5 */
 	font-size: 0;

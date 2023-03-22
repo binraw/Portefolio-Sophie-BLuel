@@ -242,6 +242,7 @@ btnAll.addEventListener("mouseout", (event) => {
 
 // creation de la fonction pour appeler les img dans la modale
 const allImgModal = [];
+
 async function callImagesModale() {
 	await fetch("http://localhost:5678/api/works").then((response) =>
 		response.json().then((works) => {
@@ -259,6 +260,21 @@ async function callImagesModale() {
 				creatImg.style.width = "4rem";
 				creatImg.style.height = "6rem";
 				creatImg.style.margin = ".3rem";
+				creatDiv.style.position = "relative";
+
+				const iconPoubelle = document.createElement("i");
+				iconPoubelle.textContent = "delete";
+				iconPoubelle.classList.add("material-icons");
+				iconPoubelle.style.backgroundColor = "black";
+				iconPoubelle.style.color = "white";
+				iconPoubelle.style.fontSize = "16px";
+				iconPoubelle.style.position = "absolute";
+				iconPoubelle.style.top = "5px";
+				iconPoubelle.style.right = "5px";
+				iconPoubelle.setAttribute("id", "delete");
+
+				creatDiv.appendChild(iconPoubelle);
+
 				creatDiv.appendChild(creatImg);
 				creatDiv.appendChild(title);
 				allImgModal.push(creatDiv);
@@ -268,6 +284,8 @@ async function callImagesModale() {
 	);
 }
 callImagesModale();
+// const allIconDelete = document.getElementsByClassName("meterial");
+// console.log(allIconDelete);
 //creation function pour ouverture modale
 const modale = document.getElementById("modal1");
 const btnCloseModale = document.getElementById("close");
@@ -285,6 +303,26 @@ const closeModal = function () {
 };
 
 btnCloseModale.addEventListener("click", closeModal);
+
+//fonction pour la suppression des elements
+// console.log(supprElement());
+async function supprElement(id) {
+	await fetch(`http://localhost:5678/api/works/${id}`, {
+		method: "DELETE",
+
+		headers: { "Content-Type": "application/json" },
+	})
+		.then((response) => {
+			if (response.ok) {
+				console.log("Suppression effectuée avec succès !");
+			} else {
+				console.log("Une erreur s'est produite lors de la suppression.");
+			}
+		})
+		.catch((error) => {
+			console.log("Une erreur s'est produite: ", error);
+		});
+}
 
 // controle de la connexion réaliser (savoir si le token est present)
 // const urlParams = new URLSearchParams(window.location.search);
@@ -333,6 +371,7 @@ if (accessToken != null) {
 	icon.style.order = "-1";
 	navModification.append(editionMode, publication);
 	editionMode.addEventListener("click", openModal);
+	// fonction qui permet le clic en dehors de la modale et la fermeture
 	window.onclick = function (event) {
 		if (event.target == modale) {
 			modale.style.display = "none";
