@@ -264,7 +264,7 @@ if (accessToken != null) {
 	logout.addEventListener("click", () => {
 		localStorage.clear();
 	});
-	console.log("bonjour sophie");
+
 	console.log(localStorage);
 	// --------- barre modification ----------------
 	const header = document.querySelector("header");
@@ -316,7 +316,7 @@ if (accessToken != null) {
 					creatImg.src = img.imageUrl;
 					const idImg = img.categoryId;
 					creatDiv.id = "projet" + idImg;
-					// const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
+
 					creatDiv.setAttribute("id", "projet" + idImg);
 					creatImg.style.width = "4rem";
 					creatImg.style.height = "6rem";
@@ -429,6 +429,73 @@ if (accessToken != null) {
 	btnModif.style.gap = "10px";
 	iconElement.style.order = "-1";
 	modification.append(btnModif);
+
+	// recuperation du click ajouter pour changer la modale
+	const btnAddImg = document.getElementById("ajout");
+	const galleryModal = document.getElementById("gallery");
+	const galleryModalClick = document.getElementById("gallery-modale-click");
+	galleryModalClick.style.width = "90%";
+	function createObjtModale() {
+		galleryModal.style.display = "none";
+		const titleModale = document.createElement("div");
+		titleModale.textContent = "Titre";
+		const champText = document.createElement("input");
+		champText.style.minWidth = "90%";
+		titleModale.style.margin = "3rem";
+		champText.style.margin = "1rem";
+		champText.setAttribute("type", "text");
+		const cateModale = document.createElement("div");
+		cateModale.textContent = "Categorie";
+		const champCategories = document.createElement("input");
+		champCategories.style.minWidth = "90%";
+		cateModale.style.margin = "3rem";
+		champCategories.style.margin = "1rem";
+		champCategories.setAttribute("type", "text");
+
+		galleryModalClick.style.borderBottom = "1px solid grey";
+		galleryModalClick.style.padding = "1rem";
+		galleryModalClick.style.width = "50%";
+
+		titleModale.appendChild(champText);
+		cateModale.appendChild(champCategories);
+		galleryModalClick.appendChild(titleModale);
+		galleryModalClick.appendChild(cateModale);
+		const btnArrowBackModal = document.createElement("button");
+		btnArrowBackModal.style.position = "absolute";
+		btnArrowBackModal.style.top = "1.3rem";
+		btnArrowBackModal.style.left = "2rem";
+		btnArrowBackModal.style.backgroundColor = "white";
+		btnArrowBackModal.style.border = "0";
+		const arrowBackModal = document.createElement("i");
+		arrowBackModal.classList.add("material-icons");
+		arrowBackModal.textContent = "arrow_back";
+		btnArrowBackModal.appendChild(arrowBackModal);
+		galleryModalClick.appendChild(btnArrowBackModal);
+		btnArrowBackModal.addEventListener("click", () => {
+			galleryModalClick.style.display = "none";
+			sectionImagesModale.style.display = null;
+
+			btnAddImg.textContent = "Ajouter une photo";
+			btnAddImg.style.backgroundColor = "#1d6154";
+		});
+	}
+	let modalCreated = false;
+	function changeModal() {
+		if (!modalCreated) {
+			createObjtModale();
+			modalCreated = true;
+			btnAddImg.textContent = "Valider";
+			btnAddImg.style.backgroundColor = "grey";
+		} else {
+			galleryModal.style.display = "none";
+			galleryModalClick.style.display = "block";
+			btnAddImg.textContent = "Valider";
+			btnAddImg.style.backgroundColor = "grey";
+		}
+	}
+	btnAddImg.addEventListener("click", () => {
+		changeModal();
+	});
 } else {
 	console.log(localStorage);
 	console.log("non non");
