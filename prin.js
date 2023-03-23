@@ -347,6 +347,7 @@ if (accessToken != null) {
 
 	const openModal = function () {
 		modale.style.display = null;
+		divUploadImg.style.display = "none";
 		sectionImagesModale.innerHTML = "";
 
 		allImgModal.forEach((img) => {
@@ -434,6 +435,8 @@ if (accessToken != null) {
 	const btnAddImg = document.getElementById("ajout");
 	const galleryModal = document.getElementById("gallery");
 	const galleryModalClick = document.getElementById("gallery-modale-click");
+	const titleContenerModal = document.getElementById("title-modale");
+	const divUploadImg = document.getElementById("upload");
 	galleryModalClick.style.width = "90%";
 	function createObjtModale() {
 		galleryModal.style.display = "none";
@@ -453,8 +456,8 @@ if (accessToken != null) {
 		champCategories.setAttribute("type", "text");
 
 		galleryModalClick.style.borderBottom = "1px solid grey";
-		galleryModalClick.style.padding = "1rem";
 		galleryModalClick.style.width = "50%";
+		galleryModalClick.style.height = "70%";
 
 		titleModale.appendChild(champText);
 		cateModale.appendChild(champCategories);
@@ -473,10 +476,12 @@ if (accessToken != null) {
 		galleryModalClick.appendChild(btnArrowBackModal);
 		btnArrowBackModal.addEventListener("click", () => {
 			galleryModalClick.style.display = "none";
+			divUploadImg.style.display = "none";
 			sectionImagesModale.style.display = null;
 
 			btnAddImg.textContent = "Ajouter une photo";
 			btnAddImg.style.backgroundColor = "#1d6154";
+			titleContenerModal.textContent = "Galerie photo";
 		});
 	}
 	let modalCreated = false;
@@ -486,11 +491,15 @@ if (accessToken != null) {
 			modalCreated = true;
 			btnAddImg.textContent = "Valider";
 			btnAddImg.style.backgroundColor = "grey";
+			titleContenerModal.textContent = "Ajout photo";
+			divUploadImg.style.display = null;
 		} else {
 			galleryModal.style.display = "none";
 			galleryModalClick.style.display = "block";
 			btnAddImg.textContent = "Valider";
 			btnAddImg.style.backgroundColor = "grey";
+			titleContenerModal.textContent = "Ajout photo";
+			divUploadImg.style.display = null;
 		}
 	}
 	btnAddImg.addEventListener("click", () => {
