@@ -316,7 +316,6 @@ if (accessToken != null) {
 					creatImg.src = img.imageUrl;
 					const idImg = img.categoryId;
 					creatDiv.id = "projet" + idImg;
-
 					creatDiv.setAttribute("id", "projet" + idImg);
 					creatImg.style.width = "4rem";
 					creatImg.style.height = "6rem";
@@ -347,6 +346,7 @@ if (accessToken != null) {
 
 	const openModal = function () {
 		modale.style.display = null;
+		galleryModalClick.style.display = "none";
 		divUploadImg.style.display = "none";
 		sectionImagesModale.innerHTML = "";
 
@@ -405,7 +405,6 @@ if (accessToken != null) {
 	iconDescrip.classList.add("fa", "fa-edit");
 	iconDescrip.style.order = "-1";
 	btnModifIntro.appendChild(iconDescrip);
-
 	btnModifIntro.style.backgroundColor = "rgb(229, 229, 229)";
 	divForButton.appendChild(btnModifIntro);
 	description.appendChild(divForButton);
@@ -416,14 +415,12 @@ if (accessToken != null) {
 	modification.style.justifyContent = "center";
 	const iconElement = document.createElement("i");
 	iconElement.classList.add("fa", "fa-edit");
-
 	const btnModif = document.createElement("button");
 	btnModif.textContent = "modifier";
 	btnModif.style.width = "5rem";
 	btnModif.style.marginLeft = "2rem";
 	btnModif.style.border = "0";
 	btnModif.style.backgroundColor = "rgb(229, 229, 229)";
-
 	btnModif.appendChild(iconElement);
 	btnModif.style.display = "flex";
 	btnModif.style.alignItems = "center";
@@ -436,33 +433,17 @@ if (accessToken != null) {
 	const galleryModal = document.getElementById("gallery");
 	const galleryModalClick = document.getElementById("gallery-modale-click");
 	const titleContenerModal = document.getElementById("title-modale");
+	const formModal = document.getElementById("form-modale");
 	const divUploadImg = document.getElementById("upload");
 	galleryModalClick.style.width = "90%";
 	function createObjtModale() {
 		galleryModal.style.display = "none";
-		const titleModale = document.createElement("div");
-		titleModale.textContent = "Titre";
-		const champText = document.createElement("input");
-		champText.style.minWidth = "90%";
-		titleModale.style.margin = "3rem";
-		champText.style.margin = "1rem";
-		champText.setAttribute("type", "text");
-		const cateModale = document.createElement("div");
-		cateModale.textContent = "Categorie";
-		const champCategories = document.createElement("input");
-		champCategories.style.minWidth = "90%";
-		cateModale.style.margin = "3rem";
-		champCategories.style.margin = "1rem";
-		champCategories.setAttribute("type", "text");
-
 		galleryModalClick.style.borderBottom = "1px solid grey";
 		galleryModalClick.style.width = "50%";
 		galleryModalClick.style.height = "70%";
 
-		titleModale.appendChild(champText);
-		cateModale.appendChild(champCategories);
-		galleryModalClick.appendChild(titleModale);
-		galleryModalClick.appendChild(cateModale);
+		galleryModalClick.appendChild(formModal);
+
 		const btnArrowBackModal = document.createElement("button");
 		btnArrowBackModal.style.position = "absolute";
 		btnArrowBackModal.style.top = "1.3rem";
@@ -478,7 +459,6 @@ if (accessToken != null) {
 			galleryModalClick.style.display = "none";
 			divUploadImg.style.display = "none";
 			sectionImagesModale.style.display = null;
-
 			btnAddImg.textContent = "Ajouter une photo";
 			btnAddImg.style.backgroundColor = "#1d6154";
 			titleContenerModal.textContent = "Galerie photo";
@@ -489,6 +469,7 @@ if (accessToken != null) {
 		if (!modalCreated) {
 			createObjtModale();
 			modalCreated = true;
+			galleryModalClick.style.display = null;
 			btnAddImg.textContent = "Valider";
 			btnAddImg.style.backgroundColor = "grey";
 			titleContenerModal.textContent = "Ajout photo";
@@ -500,6 +481,7 @@ if (accessToken != null) {
 			btnAddImg.style.backgroundColor = "grey";
 			titleContenerModal.textContent = "Ajout photo";
 			divUploadImg.style.display = null;
+			galleryModalClick.style.display = null;
 		}
 	}
 	btnAddImg.addEventListener("click", () => {

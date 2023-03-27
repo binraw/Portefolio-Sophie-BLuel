@@ -329,6 +329,7 @@ footer nav ul {
 	padding: 1rem;
 	width: 50%;
 }
+
 #upload {
 	min-width: 100%;
 	background-color: #e8f1f6;
@@ -341,4 +342,17 @@ footer nav ul {
 }
 #upload-image {
 	display: none;
+}
+#form-modale {
+	text-align: left;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+}
+#form-modale input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	margin-top: 1rem;
 }
