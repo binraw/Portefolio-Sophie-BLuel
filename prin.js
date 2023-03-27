@@ -51,7 +51,7 @@ async function getCategories() {
 						creatCategories.appendChild(creatCate);
 						creatCate.textContent = cate.name;
 						const idCate = cate.id;
-						creatCate.setAttribute("id", "projet" + idCate);
+						creatCate.setAttribute("id", idCate);
 						//contener Categorie
 						buildContenerCategories(creatCategories);
 						//boutons
@@ -74,6 +74,7 @@ async function getCategories() {
 									sectionImages.appendChild(img);
 								});
 							}
+							// generationCategories();
 						});
 
 						//creation hover
@@ -98,7 +99,7 @@ async function getCategories() {
 			creatCategories.appendChild(creatCate);
 			creatCate.textContent = cate.name;
 			const idCate = cate.id;
-			creatCate.setAttribute("id", "projet" + idCate);
+			creatCate.setAttribute("id", idCate);
 			console.log(creatCate);
 			//contener categorie
 			buildContenerCategories(creatCategories);
@@ -121,6 +122,7 @@ async function getCategories() {
 						sectionImages.appendChild(img);
 					});
 				}
+				// generationCategories();
 			});
 
 			//creation hover
@@ -152,18 +154,19 @@ async function callImages() {
 						creatImg.src = img.imageUrl;
 						const idImg = img.categoryId;
 						const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
-						creatDiv.setAttribute("id", "projet" + idImg);
+						creatDiv.setAttribute("id", idImg);
 						sectionImages.appendChild(creatDiv);
 						creatDiv.appendChild(creatImg);
 						creatDiv.appendChild(title);
 						createAll.push(creatDiv);
-						if (creatDivId == "projet1") {
+						if (creatDivId == "1") {
 							newfilterObjet.push(creatDiv);
-						} else if (creatDivId == "projet2") {
+						} else if (creatDivId == "2") {
 							newfilterAppart.push(creatDiv);
-						} else if (creatDivId == "projet3") {
+						} else if (creatDivId == "3") {
 							newfilterRestaurant.push(creatDiv);
 						}
+						// generationCategories();
 					});
 				})
 			)
@@ -176,7 +179,7 @@ async function callImages() {
 			const creatDiv = document.createElement("div");
 			const title = document.createElement("h3");
 			const idImg = img.categoryId;
-			creatDiv.setAttribute("id", "projet" + idImg);
+			creatDiv.setAttribute("id", idImg);
 			title.textContent = img.title;
 			creatImg.src = img.imageUrl;
 			title.style.marginTop = "1rem";
@@ -187,17 +190,29 @@ async function callImages() {
 
 			const creatDivId = creatDiv.getAttribute("id");
 
-			if (creatDivId == "projet1") {
+			if (creatDivId == "1") {
 				newfilterObjet.push(creatDiv);
-			} else if (creatDivId == "projet2") {
+			} else if (creatDivId == "2") {
 				newfilterAppart.push(creatDiv);
-			} else if (creatDivId == "projet3") {
+			} else if (creatDivId == "3") {
 				newfilterRestaurant.push(creatDiv);
 			}
 		});
 	}
 }
 
+// function generationCategories() {
+// 	sectionImages.innerHTML = "";
+// 	createAll.forEach((img) => {
+// 		if (creatCateId == creatDiv.id) {
+// 			sectionImages.appendChild(img);
+// 			console.log(creatCateId);
+// 			console.log(img.id);
+// 		}
+// 	});
+// }
+
+console.log(createAll);
 const newfilterObjet = [];
 
 const newfilterAppart = [];
@@ -315,7 +330,7 @@ if (accessToken != null) {
 					title.style.marginLeft = "1rem";
 					creatImg.src = img.imageUrl;
 					const idImg = img.categoryId;
-					creatDiv.id = "projet" + idImg;
+					creatDiv.id = idImg;
 					creatDiv.setAttribute("id", "projet" + idImg);
 					creatImg.style.width = "4rem";
 					creatImg.style.height = "6rem";
@@ -347,6 +362,7 @@ if (accessToken != null) {
 	const openModal = function () {
 		modale.style.display = null;
 		galleryModalClick.style.display = "none";
+
 		divUploadImg.style.display = "none";
 		sectionImagesModale.innerHTML = "";
 
@@ -363,10 +379,15 @@ if (accessToken != null) {
 	//fonction pour la suppression des elements
 	// console.log(supprElement());
 	async function supprElement(id) {
-		await fetch(`http://localhost:5678/api/works/${id}`, {
+		const newId = id.replace("projet", "");
+
+		await fetch(`http://localhost:5678/api/works/${Number(newId)}`, {
 			method: "DELETE",
 
-			headers: { "Content-Type": "application/json" },
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${accessToken}`,
+			},
 		})
 			.then((response) => {
 				if (response.ok) {
@@ -455,6 +476,7 @@ if (accessToken != null) {
 		arrowBackModal.textContent = "arrow_back";
 		btnArrowBackModal.appendChild(arrowBackModal);
 		galleryModalClick.appendChild(btnArrowBackModal);
+		// galleryModalClick.style.display = "none";
 		btnArrowBackModal.addEventListener("click", () => {
 			galleryModalClick.style.display = "none";
 			divUploadImg.style.display = "none";
