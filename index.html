@@ -102,23 +102,25 @@
 									name="upload-image"
 									max-size="4000"
 									accept=".jpg, .jpeg, .png"
+									required
 								/>
 								<p class="sous-titre">jpg, png : 4mo max</p>
 							</div>
 							<form id="form-modale" action="#" method="post">
 								<label for="name">Nom</label>
-								<input type="text" name="name" id="name" />
+								<input type="text" name="name" id="name" required />
 								<label for="pet-select">Catégorie:</label>
 
-								<select name="pets" id="pet-select">
+								<select name="pets" id="pet-select" required>
 									<option value=""></option>
-									<option value="dog">Objet</option>
-									<option value="cat">Hotel</option>
-									<option value="hamster">Restaurant</option>
+									<option value="1">Objet</option>
+									<option value="2">Hotel</option>
+									<option value="3">Restaurant</option>
 								</select>
 							</form>
 						</div>
 						<button id="ajout">Ajouter une photo</button>
+						<input id="check" type="submit" value="Valider" />
 						<button id="suppr">Supprimer la galerie</button>
 						<!-- </div> -->
 					</div>
