@@ -538,27 +538,38 @@ if (accessToken != null) {
 			divImgForm.innerHTML = "";
 			divImgForm.appendChild(imgUpload);
 			imgUpload.style.maxHeight = " 10rem;";
-			console.log("bonjour");
+			console.log(imgUpload);
 			newReader.readAsDataURL(file[0]);
 		}
 	});
 
+	const formElem = document.getElementById("form-modale");
+	console.log(formElem);
+	const preload = new FormData(formElem);
 	async function addElementsModal() {
-		await fetch(`http://localhost:5678/api/works}`, {
+		await fetch(`http://localhost:5678/api/works`, {
 			method: "POST",
 
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify(Object.fromEntries(preload.entries())),
 		})
 			.then((res) => res.json())
 			.then((data) => console.log(data))
 			.catch((error) => console.log(error));
 	}
 
-	// btnCheckAddImgModal.addEventListener("click", addElementsModal);
+	formElem.addEventListener("submit", function (e) {
+		e.preventDefault();
+		addElementsModal();
+	});
+	// btnCheckAddImgModal.addEventListener("click", addElementsModal());
 } else {
 	console.log(localStorage);
 	console.log("non non");
 }
+
+/*une idee comme ca data.forEach(post=>{
+	blabla.insertAdjacentHTML('beforeend',)*/
+//})//
