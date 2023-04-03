@@ -542,29 +542,84 @@ if (accessToken != null) {
 			newReader.readAsDataURL(file[0]);
 		}
 	});
+	// const formElem = document.getElementById("form-modale");
+	// console.log(formElem);
+
+	// async function addElementsModal() {
+	// 	const preload = new FormData(formElem);
+	// 	await fetch(`http://localhost:5678/api/works`, {
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 			Authorization: `Bearer ${accessToken}`,
+	// 		},
+	// 		// body: JSON.stringify(Object.fromEntries(preload.entries())),
+	// 		body: JSON.stringify(preload),
+	// 	})
+	// 		.then((res) => res.json())
+	// 		.then((data) => console.log(data))
+	// 		.catch((error) => console.log(error));
+	// }
+
+	// formElem.addEventListener("submit", function (e) {
+	// 	e.preventDefault();
+	// 	// addElementsModal();
+	// });
+
+	// btnCheckAddImgModal.addEventListener("click", addElementsModal);
+
+	// const formElem = document.getElementById("form-modale");
+	// console.log(formElem);
+
+	// async function addElementsModal() {
+	// 	const preload = new FormData(formElem);
+	// 	await fetch(`http://localhost:5678/api/works`, {
+	// 		method: "POST",
+	// 		headers: {
+	// 			Authorization: `Bearer ${accessToken}`,
+	// 		},
+	// 		body: preload,
+	// 	})
+	// 		.then((res) => console.log(res.json()))
+	// 		.then((data) => console.log(data))
+	// 		.catch((error) => console.log(error.message));
+	// }
+
+	// formElem.addEventListener("submit", function (e) {
+	// 	e.preventDefault();
+	// });
+
+	// btnCheckAddImgModal.addEventListener("click", addElementsModal);
 
 	const formElem = document.getElementById("form-modale");
 	console.log(formElem);
-	const preload = new FormData(formElem);
-	async function addElementsModal() {
-		await fetch(`http://localhost:5678/api/works`, {
-			method: "POST",
 
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(Object.fromEntries(preload.entries())),
-		})
-			.then((res) => res.json())
-			.then((data) => console.log(data))
-			.catch((error) => console.log(error));
+	async function addElementsModal() {
+		const preload = new FormData(formElem);
+		try {
+			const response = await fetch(`http://localhost:5678/api/works`, {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+				body: preload,
+			});
+			if (response.ok) {
+				const data = await response.json();
+				console.log(data);
+			} else {
+				console.error(`Erreur HTTP ${response.status}: ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	formElem.addEventListener("submit", function (e) {
 		e.preventDefault();
-		addElementsModal();
 	});
-	// btnCheckAddImgModal.addEventListener("click", addElementsModal());
+
+	btnCheckAddImgModal.addEventListener("click", addElementsModal);
 } else {
 	console.log(localStorage);
 	console.log("non non");
