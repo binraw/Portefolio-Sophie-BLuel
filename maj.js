@@ -1,11 +1,11 @@
-let works = window.localStorage.getItem("tableau");
 const body = document.querySelector("body");
 const log = document.getElementById("login");
 const logout = document.getElementById("logout");
 const information = document.getElementById("info");
 const sectionImages = document.querySelector(".gallery");
 const sectionImagesModale = document.getElementById("gallery");
-
+let arrayCategories = [];
+let worksToDisplay = [];
 // style background
 body.style.backgroundColor = "#E5E5E5";
 // style login lien et info
@@ -39,198 +39,105 @@ function buildBtnCategorie(e) {
 	e.style.fontSize = "larger";
 	e.style.backgroundColor = "#E5E5E5";
 }
+
 async function getCategories() {
-	if (data === null) {
-		await fetch(`http://localhost:5678/api/categories`)
-			.then((response) =>
-				response.json().then((data) => {
-					const valuesData = JSON.stringify(data);
-					window.localStorage.setItem("filter", valuesData);
-					data.forEach((cate) => {
-						const creatCate = document.createElement("btn");
-						creatCategories.appendChild(creatCate);
-						creatCate.textContent = cate.name;
-						const idCate = cate.id;
-						creatCate.setAttribute("id", idCate);
-						//contener Categorie
-						buildContenerCategories(creatCategories);
-						//boutons
+	await fetch(`http://localhost:5678/api/categories`).then((response) =>
+		response.json().then((data) => {
+			arrayCategories = data;
 
-						buildBtnCategorie(creatCate);
-						//eventListener
-						creatCate.addEventListener("click", () => {
-							sectionImages.innerHTML = "";
-							if (idCate == "1") {
-								newfilterObjet.forEach((img) => {
-									sectionImages.appendChild(img);
-								});
-							} else if (idCate == "2") {
-								newfilterAppart.forEach((img) => {
-									sectionImages.appendChild(img);
-								});
-							} else if (idCate == "3") {
-								sectionImages.innerHTML = "";
-								newfilterRestaurant.forEach((img) => {
-									sectionImages.appendChild(img);
-								});
-							}
-							// generationCategories();
-						});
+			data.forEach((cate) => {
+				const creatCate = document.createElement("btn");
+				creatCategories.appendChild(creatCate);
+				creatCate.textContent = cate.name;
+				const idCate = cate.id;
+				creatCate.setAttribute("id", idCate);
+				//contener Categorie
+				buildContenerCategories(creatCategories);
+				//boutons
 
-						//creation hover
-						creatCate.addEventListener("mouseover", (event) => {
-							event.target.style.backgroundColor = "#1D6154";
-							event.target.style.color = "#E5E5E5";
-						});
-						// creation mouseout
-						creatCate.addEventListener("mouseout", (event) => {
-							event.target.style.backgroundColor = "#E5E5E5";
-							event.target.style.color = "#1D6154";
-						});
-					});
-				})
-			)
-			.catch((error) => console.error(error));
-	} else {
-		const dataArray = JSON.parse(data);
-		const creatCategories = document.querySelector(".categories");
-		dataArray.forEach((cate) => {
-			const creatCate = document.createElement("button");
-			creatCategories.appendChild(creatCate);
-			creatCate.textContent = cate.name;
-			const idCate = cate.id;
-			creatCate.setAttribute("id", idCate);
-			console.log(creatCate);
-			//contener categorie
-			buildContenerCategories(creatCategories);
-			//boutons
-			buildBtnCategorie(creatCate);
-			// event click
-			creatCate.addEventListener("click", () => {
-				sectionImages.innerHTML = "";
-				if (idCate == "1") {
-					newfilterObjet.forEach((img) => {
-						sectionImages.appendChild(img);
-					});
-				} else if (idCate == "2") {
-					newfilterAppart.forEach((img) => {
-						sectionImages.appendChild(img);
-					});
-				} else if (idCate == "3") {
-					sectionImages.innerHTML = "";
-					newfilterRestaurant.forEach((img) => {
-						sectionImages.appendChild(img);
-					});
-				}
-				// generationCategories();
-			});
+				buildBtnCategorie(creatCate);
+				//creation hover
+				creatCate.addEventListener("mouseover", (event) => {
+					event.target.style.backgroundColor = "#1D6154";
+					event.target.style.color = "#E5E5E5";
+				});
+				// creation mouseout
+				creatCate.addEventListener("mouseout", (event) => {
+					event.target.style.backgroundColor = "#E5E5E5";
+					event.target.style.color = "#1D6154";
+				});
 
-			//creation hover
-			creatCate.addEventListener("mouseover", (event) => {
-				event.target.style.backgroundColor = "#1D6154";
-				event.target.style.color = "#E5E5E5";
+				// écouteur sur les boutons filtres
+				creatCate.addEventListener("click", () => {
+					generateWorksToDisplay(idCate);
+				});
 			});
-			// creation mouseout
-			creatCate.addEventListener("mouseout", (event) => {
-				event.target.style.backgroundColor = "#E5E5E5";
-				event.target.style.color = "#1D6154";
-			});
-		});
-	}
+		})
+	);
 }
 const createAll = [];
-async function callImages() {
-	if (works === null) {
-		await fetch("http://localhost:5678/api/works")
-			.then((response) =>
-				response.json().then((works) => {
-					const valuesWorks = JSON.stringify(works);
-					window.localStorage.setItem("tableau", valuesWorks);
-					works.forEach((img) => {
-						const creatImg = document.createElement("img");
-						const creatDiv = document.createElement("div");
-						const title = document.createElement("h3");
-						creatImg.textContent = img.title;
-						creatImg.src = img.imageUrl;
-						const idImg = img.categoryId;
-						const creatDivId = creatDiv.setAttribute("id", "projet" + idImg);
-						creatDiv.setAttribute("id", idImg);
-						sectionImages.appendChild(creatDiv);
-						creatDiv.appendChild(creatImg);
-						creatDiv.appendChild(title);
-						createAll.push(creatDiv);
-						if (creatDivId == "1") {
-							newfilterObjet.push(creatDiv);
-						} else if (creatDivId == "2") {
-							newfilterAppart.push(creatDiv);
-						} else if (creatDivId == "3") {
-							newfilterRestaurant.push(creatDiv);
-						}
-						// generationCategories();
-					});
-				})
-			)
-			.catch((error) => console.error(error));
-	} else {
-		const worksArray = JSON.parse(works);
-		const sectionImages = document.querySelector(".gallery");
-		worksArray.forEach((img) => {
+async function getWorks() {
+	await fetch(`http://localhost:5678/api/works`).then((response) =>
+		response.json().then((works) => {
+			worksToDisplay = works;
+			works.forEach((img) => {
+				const creatImg = document.createElement("img");
+				const creatDiv = document.createElement("div");
+				const title = document.createElement("h3");
+				creatImg.textContent = img.title;
+				creatImg.src = img.imageUrl;
+				const idImg = img.categoryId;
+				sectionImages.appendChild(creatDiv);
+				creatDiv.appendChild(creatImg);
+				creatDiv.appendChild(title);
+				createAll.push(creatDiv);
+				console.log(idImg);
+			});
+			// Génération
+		})
+	);
+}
+
+function generateWorksToDisplay(categoryId = null) {
+	sectionImages.innerHTML = "";
+	if (categoryId === null) {
+		worksToDisplay.forEach((img) => {
 			const creatImg = document.createElement("img");
 			const creatDiv = document.createElement("div");
 			const title = document.createElement("h3");
-			const idImg = img.categoryId;
-			creatDiv.setAttribute("id", idImg);
-			title.textContent = img.title;
+			creatImg.textContent = img.title;
 			creatImg.src = img.imageUrl;
-			title.style.marginTop = "1rem";
 			sectionImages.appendChild(creatDiv);
 			creatDiv.appendChild(creatImg);
 			creatDiv.appendChild(title);
 			createAll.push(creatDiv);
-
-			const creatDivId = creatDiv.getAttribute("id");
-
-			if (creatDivId == "1") {
-				newfilterObjet.push(creatDiv);
-			} else if (creatDivId == "2") {
-				newfilterAppart.push(creatDiv);
-			} else if (creatDivId == "3") {
-				newfilterRestaurant.push(creatDiv);
+		});
+	} else {
+		worksToDisplay.forEach((img) => {
+			if (img.categoryId == categoryId) {
+				const creatImg = document.createElement("img");
+				const creatDiv = document.createElement("div");
+				const title = document.createElement("h3");
+				creatImg.textContent = img.title;
+				creatImg.src = img.imageUrl;
+				sectionImages.appendChild(creatDiv);
+				creatDiv.appendChild(creatImg);
+				creatDiv.appendChild(title);
+				createAll.push(creatDiv);
 			}
 		});
 	}
 }
 
-// function generationCategories() {
-// 	sectionImages.innerHTML = "";
-// 	createAll.forEach((img) => {
-// 		if (creatCateId == creatDiv.id) {
-// 			sectionImages.appendChild(img);
-// 			console.log(creatCateId);
-// 			console.log(img.id);
-// 		}
-// 	});
-// }
-
-console.log(createAll);
-const newfilterObjet = [];
-
-const newfilterAppart = [];
-const newfilterRestaurant = [];
-
-//Création des buttons et effect click isoler
-
-const btnObject = creatCategories.getElementsByTagName("button")[0];
-const btnAppart = creatCategories.getElementsByTagName("button")[1];
-const btnHotel = creatCategories.getElementsByTagName("button")[2];
+getWorks();
+getCategories();
+console.log(worksToDisplay);
 const btnAll = document.createElement("button");
 creatCategories.appendChild(btnAll);
 //Bouton Tous
 btnAll.textContent = "Tous";
 btnAll.style.order = -1;
 buildBtnCategorie(btnAll);
-callImages();
-getCategories();
 
 // // creation click
 btnAll.addEventListener("click", () => {
@@ -266,10 +173,6 @@ function buildIcon(e) {
 	e.style.right = "5px";
 	e.setAttribute("id", "delete");
 }
-
-// controle de la connexion réaliser (savoir si le token est present)
-// const urlParams = new URLSearchParams(window.location.search);
-// const accessToken = urlParams.get("access_token");
 const accessToken = localStorage.getItem("access_token");
 
 if (accessToken != null) {
@@ -542,78 +445,21 @@ if (accessToken != null) {
 			newReader.readAsDataURL(file[0]);
 		}
 	});
-	// const formElem = document.getElementById("form-modale");
-	// console.log(formElem);
-
-	// async function addElementsModal() {
-	// 	const preload = new FormData(formElem);
-	// 	await fetch(`http://localhost:5678/api/works`, {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 			Authorization: `Bearer ${accessToken}`,
-	// 		},
-	// 		// body: JSON.stringify(Object.fromEntries(preload.entries())),
-	// 		body: JSON.stringify(preload),
-	// 	})
-	// 		.then((res) => res.json())
-	// 		.then((data) => console.log(data))
-	// 		.catch((error) => console.log(error));
-	// }
-
-	// formElem.addEventListener("submit", function (e) {
-	// 	e.preventDefault();
-	// 	// addElementsModal();
-	// });
-
-	// btnCheckAddImgModal.addEventListener("click", addElementsModal);
-
-	// const formElem = document.getElementById("form-modale");
-	// console.log(formElem);
-
-	// async function addElementsModal() {
-	// 	const preload = new FormData(formElem);
-	// 	await fetch(`http://localhost:5678/api/works`, {
-	// 		method: "POST",
-	// 		headers: {
-	// 			Authorization: `Bearer ${accessToken}`,
-	// 		},
-	// 		body: preload,
-	// 	})
-	// 		.then((res) => console.log(res.json()))
-	// 		.then((data) => console.log(data))
-	// 		.catch((error) => console.log(error.message));
-	// }
-
-	// formElem.addEventListener("submit", function (e) {
-	// 	e.preventDefault();
-	// });
-
-	// btnCheckAddImgModal.addEventListener("click", addElementsModal);
-
 	const formElem = document.getElementById("form-modale");
 	console.log(formElem);
 
 	async function addElementsModal() {
 		const preload = new FormData(formElem);
-		try {
-			const response = await fetch(`http://localhost:5678/api/works`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${accessToken}`,
-				},
-				body: preload,
-			});
-			if (response.ok) {
-				const data = await response.json();
-				console.log(data);
-			} else {
-				console.error(`Erreur HTTP ${response.status}: ${response.statusText}`);
-			}
-		} catch (error) {
-			console.error(error);
-		}
+		await fetch(`http://localhost:5678/api/works`, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+			body: preload,
+		})
+			.then((res) => console.log(res.json()))
+			.then((data) => console.log(data))
+			.catch((error) => console.log(error.message));
 	}
 
 	formElem.addEventListener("submit", function (e) {
@@ -625,7 +471,3 @@ if (accessToken != null) {
 	console.log(localStorage);
 	console.log("non non");
 }
-
-/*une idee comme ca data.forEach(post=>{
-	blabla.insertAdjacentHTML('beforeend',)*/
-//})//
