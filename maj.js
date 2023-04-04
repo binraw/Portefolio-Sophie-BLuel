@@ -279,11 +279,14 @@ if (accessToken != null) {
 	};
 
 	btnCloseModale.addEventListener("click", closeModal);
-
+	console.log(accessToken);
 	async function supprElement(id) {
-		const newId = id.replace("projet", "");
+		// const newId = id;
+		const newId = Number(id.replace("projet", ""));
+		console.log(typeof newId);
+		console.log(newId);
 
-		await fetch(`http://localhost:5678/api/works/${Number(newId)}`, {
+		await fetch(`http://localhost:5678/api/works/${newId}`, {
 			method: "DELETE",
 
 			headers: {
@@ -294,8 +297,18 @@ if (accessToken != null) {
 			.then((response) => {
 				if (response.ok) {
 					console.log("Suppression effectuée avec succès !");
+					return fetch("http://localhost:5678/api/works");
 				} else {
 					console.log("Une erreur s'est produite lors de la suppression.");
+				}
+			})
+			.then((response) => {
+				if (response.ok) {
+					return response.json(); // convertit la réponse en un objet JSON
+				} else {
+					console.log(
+						"Une erreur s'est produite lors de la récupération des éléments."
+					);
 				}
 			})
 			.catch((error) => {
