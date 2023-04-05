@@ -460,9 +460,24 @@ if (accessToken != null) {
 	});
 	const formElem = document.getElementById("form-modale");
 	console.log(formElem);
-
+	// test de la lecture des reader
+	const read = (file) =>
+		new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = (event) => resolve(event.target.result);
+			reader.onerror = reject;
+			reader.readAsDataURL(file);
+		});
+	const result = await read(file);
+	const valueTitle = document.getElementById("name").value;
+	console.log(valueTitle);
+	const valueCateInput = document.getElementById("pet-select").value;
+	console.log(valueCateInput);
+	const preload = new FormData();
+	preload.append("title", valueTitle);
+	preload.append("image", result);
+	preload.append("category", valueCateInput);
 	async function addElementsModal() {
-		const preload = new FormData(formElem);
 		await fetch(`http://localhost:5678/api/works`, {
 			method: "POST",
 			headers: {
