@@ -461,40 +461,56 @@ if (accessToken != null) {
 	const formElem = document.getElementById("form-modale");
 	console.log(formElem);
 	// test de la lecture des reader
-	const read = (file) =>
-		new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.onload = (event) => resolve(event.target.result);
-			reader.onerror = reject;
-			reader.readAsDataURL(file);
-		});
-	const result = await read(file);
-	const valueTitle = document.getElementById("name").value;
-	console.log(valueTitle);
+	// const read = (file) =>
+	// 	new Promise((resolve, reject) => {
+	// 		const reader = new FileReader();
+	// 		reader.onload = (event) => resolve(event.target.result);
+	// 		reader.onerror = reject;
+	// 		reader.readAsDataURL(file);
+	// 	});
+	// const result = await read(file);
+	// const valueTitle = document.getElementById("name").value;
+	// console.log(valueTitle);
 	const valueCateInput = document.getElementById("pet-select").value;
-	console.log(valueCateInput);
-	const preload = new FormData();
-	preload.append("title", valueTitle);
-	preload.append("image", result);
-	preload.append("category", valueCateInput);
+
 	async function addElementsModal() {
+		const titre = document.getElementById("name").value;
+		// const image = document.getElementById("upload").value;
 		await fetch(`http://localhost:5678/api/works`, {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
-			body: preload,
+			body: JSON.stringify({ titre, imgUpload }),
 		})
-			.then((res) => console.log(res.json()))
-			.then((data) => console.log(data))
+			.then((response) => response.json())
+			.then((data) => {
+				const imageElement = document.createElement("img");
+				imageElement.src = data.image;
+
+				const titreElement = document.createElement("h2");
+				titreElement.textContent = data.titre;
+				console.log(titreElement);
+				console.log("titre", titre);
+				console.log("image", imgUpload);
+				sectionImages.appendChild(titreElement);
+				sectionImages.appendChild(imageElement);
+			})
+
 			.catch((error) => console.log(error.message));
 	}
 
-	formElem.addEventListener("submit", function (e) {
-		e.preventDefault();
-	});
+	// formElem.addEventListener("submit", function (e) {
+	// 	e.preventDefault();
 
-	btnCheckAddImgModal.addEventListener("click", addElementsModal);
+	// 	addElementsModal();
+	// });
+
+	btnCheckAddImgModal.addEventListener("click", () => {
+		// e.preventDefault();
+
+		addElementsModal();
+	});
 } else {
 	console.log(localStorage);
 	console.log("non non");
