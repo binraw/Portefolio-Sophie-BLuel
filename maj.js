@@ -1,3 +1,12 @@
+import {
+	styleBarreNavigation,
+	styleContenerHeader,
+	stylePublicationButton,
+	styleEditionButton,
+	styleBtnModifIntro,
+	styleBtnModif,
+	styleBtnArrowModale,
+} from "./stylesheet.js";
 const body = document.querySelector("body");
 const log = document.getElementById("login");
 const logout = document.getElementById("logout");
@@ -93,7 +102,6 @@ async function getWorks() {
 				createAll.push(creatDiv);
 				console.log(idImg);
 			});
-			// Génération
 		})
 	);
 }
@@ -188,38 +196,18 @@ if (accessToken != null) {
 	const header = document.querySelector("header");
 	const navModification = document.createElement("div");
 	header.appendChild(navModification);
-	navModification.style.width = "100vw";
-	navModification.style.order = "-1";
-	navModification.style.display = "flex";
-	navModification.style.justifyContent = "center";
-	navModification.style.gap = "10px";
-	navModification.style.background = "black";
-	navModification.style.height = "4rem";
+	styleBarreNavigation(navModification);
 
-	header.style.display = "flex";
-	header.style.flexWrap = "wrap";
-	header.style.marginTop = "0";
-	header.style.gap = "20px";
-	header.style.justifyContent = "space-around";
+	styleContenerHeader(header);
 	const icon = document.createElement("i");
 	icon.classList.add("fa", "fa-edit");
 	const editionMode = document.createElement("button");
-
-	editionMode.textContent = "Mode édition";
 	const publication = document.createElement("button");
-	publication.textContent = "publier les changements";
-	editionMode.style.color = "white";
-	editionMode.style.backgroundColor = "black";
-	editionMode.style.border = "0px";
-	editionMode.style.margin = "10px";
-	publication.style.border = "0px";
-	publication.style.borderRadius = "60px";
-	publication.style.padding = "10px";
-	publication.style.margin = "15px";
+	stylePublicationButton(publication);
+	styleEditionButton(editionMode);
+
 	editionMode.appendChild(icon);
-	editionMode.style.display = "flex";
-	editionMode.style.alignItems = "center";
-	editionMode.style.gap = "10px";
+
 	icon.style.order = "-1";
 	navModification.append(editionMode, publication);
 	async function callImagesModale() {
@@ -281,12 +269,9 @@ if (accessToken != null) {
 	btnCloseModale.addEventListener("click", closeModal);
 	console.log(accessToken);
 	async function supprElement(id) {
-		// const newId = id;
-		const newId = Number(id.replace("projet", ""));
-		console.log(typeof newId);
-		console.log(newId);
+		const newId = id.replace("projet", "");
 
-		await fetch(`http://localhost:5678/api/works/${newId}`, {
+		await fetch(`http://localhost:5678/api/works/${Number(newId)}`, {
 			method: "DELETE",
 
 			headers: {
@@ -297,18 +282,8 @@ if (accessToken != null) {
 			.then((response) => {
 				if (response.ok) {
 					console.log("Suppression effectuée avec succès !");
-					return fetch("http://localhost:5678/api/works");
 				} else {
 					console.log("Une erreur s'est produite lors de la suppression.");
-				}
-			})
-			.then((response) => {
-				if (response.ok) {
-					return response.json(); // convertit la réponse en un objet JSON
-				} else {
-					console.log(
-						"Une erreur s'est produite lors de la récupération des éléments."
-					);
 				}
 			})
 			.catch((error) => {
@@ -327,21 +302,16 @@ if (accessToken != null) {
 	const description = document.getElementById("introduction");
 	const divForButton = document.createElement("div");
 	const btnModifIntro = document.createElement("button");
+	styleBtnModifIntro(btnModifIntro);
 	description.style.display = "flex";
 	description.style.flexWrap = "wrap";
-	btnModifIntro.textContent = "modifier";
+
 	divForButton.style.width = "100%";
-	btnModifIntro.style.display = "flex";
-	btnModifIntro.style.width = "5rem";
-	btnModifIntro.style.marginLeft = "3rem";
-	btnModifIntro.style.alignSelf = "end";
-	btnModifIntro.style.border = "0";
-	btnModifIntro.style.gap = "10px";
+
 	const iconDescrip = document.createElement("i");
 	iconDescrip.classList.add("fa", "fa-edit");
 	iconDescrip.style.order = "-1";
 	btnModifIntro.appendChild(iconDescrip);
-	btnModifIntro.style.backgroundColor = "rgb(229, 229, 229)";
 	divForButton.appendChild(btnModifIntro);
 	description.appendChild(divForButton);
 
@@ -352,15 +322,9 @@ if (accessToken != null) {
 	const iconElement = document.createElement("i");
 	iconElement.classList.add("fa", "fa-edit");
 	const btnModif = document.createElement("button");
-	btnModif.textContent = "modifier";
-	btnModif.style.width = "5rem";
-	btnModif.style.marginLeft = "2rem";
-	btnModif.style.border = "0";
-	btnModif.style.backgroundColor = "rgb(229, 229, 229)";
+	styleBtnModif(btnModif);
 	btnModif.appendChild(iconElement);
-	btnModif.style.display = "flex";
-	btnModif.style.alignItems = "center";
-	btnModif.style.gap = "10px";
+
 	iconElement.style.order = "-1";
 	modification.append(btnModif);
 
@@ -381,11 +345,7 @@ if (accessToken != null) {
 		galleryModalClick.appendChild(formModal);
 
 		const btnArrowBackModal = document.createElement("button");
-		btnArrowBackModal.style.position = "absolute";
-		btnArrowBackModal.style.top = "1.3rem";
-		btnArrowBackModal.style.left = "2rem";
-		btnArrowBackModal.style.backgroundColor = "white";
-		btnArrowBackModal.style.border = "0";
+		styleBtnArrowModale(btnArrowBackModal);
 		const arrowBackModal = document.createElement("i");
 		arrowBackModal.classList.add("material-icons");
 		arrowBackModal.textContent = "arrow_back";
