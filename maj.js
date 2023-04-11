@@ -392,21 +392,20 @@ if (accessToken != null) {
 			const reader = new FileReader();
 			reader.onload = async (event) => {
 				const result = event.target.result;
-				console.log(result);
+				// console.log(result);
 
 				// Accéder aux propriétés des fichiers ici, par exemple :
-				const inputFileTitle = document.getElementById("name");
+
 				const inputFileImage = document.getElementById("upload");
-				const fileTitle = inputFileTitle.files[0];
+
 				const fileTImage = inputFileImage.files[0];
 
-				const resultTitle = await read(fileTitle);
 				const resultImage = await read(fileTImage);
 
 				// Vérifier que tous les champs du formulaire sont remplis avant d'appeler addElementsModal
 				if (resultTitle && resultImage) {
 					// Appeler la fonction addElementsModal avec les résultats
-					await addElementsModal(resultTitle, resultImage);
+					await addElementsModal(resultImage);
 				}
 			};
 
@@ -423,7 +422,7 @@ if (accessToken != null) {
 			reader.readAsDataURL(file);
 		});
 
-	async function addElementsModal(resultTitle, resultImage) {
+	async function addElementsModal(resultImage) {
 		const titre = document.getElementById("name").value;
 		const imgUpload = document.getElementById("upload").value;
 		await fetch(`http://localhost:5678/api/works`, {
@@ -431,7 +430,7 @@ if (accessToken != null) {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
-			body: JSON.stringify({ resultTitle, resultImage }),
+			body: JSON.stringify({ titre, resultImage }),
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -439,23 +438,17 @@ if (accessToken != null) {
 				imageElement.src = data.image;
 
 				const titreElement = document.createElement("h2");
-				titreElement.textContent = data.titre;
-				console.log(data);
-				console.log("titre", titre);
-				console.log("image", imgUpload);
+				titreElement.textContent = titre;
+				console.log(titre);
+				console.log("image", resultImage);
 				sectionImages.appendChild(titreElement);
 				sectionImages.appendChild(imageElement);
 			})
 			.catch((error) => console.log(error.message));
 	}
 
-	// formElem.addEventListener("submit", function (e) {
-	// 	e.preventDefault();
-
-	// 	addElementsModal();
-	// });
-
 	btnCheckAddImgModal.addEventListener("click", () => {
+		// Appeler la fonction addElementsModal avec les résultats
 		addElementsModal();
 	});
 } else {
