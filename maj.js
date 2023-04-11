@@ -1,9 +1,12 @@
 import {
+	buildBtnCategorie,
+	buildContenerCategories,
 	styleBarreNavigation,
 	styleContenerHeader,
 	stylePublicationButton,
 	styleEditionButton,
 	styleBtnModifIntro,
+	buildIcon,
 	styleBtnModif,
 	styleBtnArrowModale,
 } from "./stylesheet.js";
@@ -29,26 +32,6 @@ logout.style.color = "black";
 let data = window.localStorage.getItem("filter");
 const creatCategories = document.querySelector(".categories");
 const creatCateId = 0;
-function buildContenerCategories(e) {
-	e.style.display = "flex";
-	e.style.width = "50%";
-	e.style.marginLeft = "auto";
-	e.style.marginRight = "auto";
-	e.style.marginBottom = "1rem";
-	e.style.justifyContent = "space-around";
-	e.style.alignItems = "center";
-}
-
-function buildBtnCategorie(e) {
-	e.style.border = "2px solid #1D6154";
-	e.style.color = "#1D6154";
-	e.style.width = "auto";
-	e.style.padding = ".5rem";
-	e.style.borderRadius = "20px";
-	e.style.fontSize = "larger";
-	e.style.backgroundColor = "#E5E5E5";
-}
-
 async function getCategories() {
 	await fetch(`http://localhost:5678/api/categories`).then((response) =>
 		response.json().then((data) => {
@@ -170,17 +153,7 @@ btnAll.addEventListener("mouseout", (event) => {
 
 // creation de la fonction pour appeler les img dans la modale
 const allImgModal = [];
-function buildIcon(e) {
-	e.textContent = "delete";
-	e.classList.add("material-icons");
-	e.style.backgroundColor = "black";
-	e.style.color = "white";
-	e.style.fontSize = "16px";
-	e.style.position = "absolute";
-	e.style.top = "5px";
-	e.style.right = "5px";
-	e.setAttribute("id", "delete");
-}
+
 const accessToken = localStorage.getItem("access_token");
 
 if (accessToken != null) {
@@ -397,8 +370,7 @@ if (accessToken != null) {
 
 	// affiche l'image quand elle est selectonnée dans le modale
 	let imgFormModal = document.getElementById("upload-image");
-	imgFormModal.addEventListener("change", function (e) {
-		let newReader = new FileReader();
+	imgFormModal.addEventListener("change", async function (e) {
 		let file = e.target.files;
 		const fileLength = file.length;
 
@@ -413,35 +385,53 @@ if (accessToken != null) {
 			let divImgForm = document.getElementById("upload");
 			divImgForm.innerHTML = "";
 			divImgForm.appendChild(imgUpload);
-			imgUpload.style.maxHeight = " 10rem;";
+			imgUpload.style.maxHeight = "10rem;";
 			console.log(imgUpload);
-			newReader.readAsDataURL(file[0]);
+
+			// Utiliser FileReader pour lire le fichier
+			const reader = new FileReader();
+			reader.onload = async (event) => {
+				const result = event.target.result;
+				console.log(result);
+
+				// Accéder aux propriétés des fichiers ici, par exemple :
+				const inputFileTitle = document.getElementById("name");
+				const inputFileImage = document.getElementById("upload");
+				const fileTitle = inputFileTitle.files[0];
+				const fileTImage = inputFileImage.files[0];
+
+				const resultTitle = await read(fileTitle);
+				const resultImage = await read(fileTImage);
+
+				// Vérifier que tous les champs du formulaire sont remplis avant d'appeler addElementsModal
+				if (resultTitle && resultImage) {
+					// Appeler la fonction addElementsModal avec les résultats
+					await addElementsModal(resultTitle, resultImage);
+				}
+			};
+
+			reader.readAsDataURL(file[0]);
 		}
 	});
-	const formElem = document.getElementById("form-modale");
-	console.log(formElem);
-	// test de la lecture des reader
-	// const read = (file) =>
-	// 	new Promise((resolve, reject) => {
-	// 		const reader = new FileReader();
-	// 		reader.onload = (event) => resolve(event.target.result);
-	// 		reader.onerror = reject;
-	// 		reader.readAsDataURL(file);
-	// 	});
-	// const result = await read(file);
-	// const valueTitle = document.getElementById("name").value;
-	// console.log(valueTitle);
-	const valueCateInput = document.getElementById("pet-select").value;
 
-	async function addElementsModal() {
+	// Fonction de lecture des fichiers
+	const read = (file) =>
+		new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = (event) => resolve(event.target.result);
+			reader.onerror = reject;
+			reader.readAsDataURL(file);
+		});
+
+	async function addElementsModal(resultTitle, resultImage) {
 		const titre = document.getElementById("name").value;
-		// const image = document.getElementById("upload").value;
+		const imgUpload = document.getElementById("upload").value;
 		await fetch(`http://localhost:5678/api/works`, {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
-			body: JSON.stringify({ titre, imgUpload }),
+			body: JSON.stringify({ resultTitle, resultImage }),
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -450,13 +440,12 @@ if (accessToken != null) {
 
 				const titreElement = document.createElement("h2");
 				titreElement.textContent = data.titre;
-				console.log(titreElement);
+				console.log(data);
 				console.log("titre", titre);
 				console.log("image", imgUpload);
 				sectionImages.appendChild(titreElement);
 				sectionImages.appendChild(imageElement);
 			})
-
 			.catch((error) => console.log(error.message));
 	}
 
@@ -467,8 +456,6 @@ if (accessToken != null) {
 	// });
 
 	btnCheckAddImgModal.addEventListener("click", () => {
-		// e.preventDefault();
-
 		addElementsModal();
 	});
 } else {

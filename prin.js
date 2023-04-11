@@ -629,3 +629,42 @@ if (accessToken != null) {
 /*une idee comme ca data.forEach(post=>{
 	blabla.insertAdjacentHTML('beforeend',)*/
 //})//
+let imgFormModal = document.getElementById("upload-image");
+imgFormModal.addEventListener("change", function (e) {
+	let newReader = new FileReader();
+	let file = e.target.files;
+	const fileLength = file.length;
+
+	console.log(fileLength);
+	if (fileLength > 0) {
+		let imgUpload = document.createElement("img");
+
+		imgUpload.classList.add("image-load");
+		const imgSource = URL.createObjectURL(file[0]);
+		imgUpload.src = imgSource;
+
+		let divImgForm = document.getElementById("upload");
+		divImgForm.innerHTML = "";
+		divImgForm.appendChild(imgUpload);
+		imgUpload.style.maxHeight = " 10rem;";
+		console.log(imgUpload);
+		newReader.readAsDataURL(file[0]);
+	}
+});
+const formElem = document.getElementById("form-modale");
+console.log(formElem);
+// test de la lecture des reader
+const read = (file) =>
+	new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = (event) => resolve(event.target.result);
+		reader.onerror = reject;
+		reader.readAsDataURL(file);
+	});
+const inputFileTitle = document.getElementById("name");
+const inputFileImage = document.getElementById("upload");
+const fileTitle = inputFileTitle.files[0];
+const fileTImage = inputFileImage.files[0];
+// const valueCateInput = document.getElementById("pet-select").value;
+const resultTitle = await read(fileTitle);
+const resultImage = await read(fileTImage);

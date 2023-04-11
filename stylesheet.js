@@ -1,3 +1,23 @@
+export function buildContenerCategories(e) {
+	e.style.display = "flex";
+	e.style.width = "50%";
+	e.style.marginLeft = "auto";
+	e.style.marginRight = "auto";
+	e.style.marginBottom = "1rem";
+	e.style.justifyContent = "space-around";
+	e.style.alignItems = "center";
+}
+
+export function buildBtnCategorie(e) {
+	e.style.border = "2px solid #1D6154";
+	e.style.color = "#1D6154";
+	e.style.width = "auto";
+	e.style.padding = ".5rem";
+	e.style.borderRadius = "20px";
+	e.style.fontSize = "larger";
+	e.style.backgroundColor = "#E5E5E5";
+}
+
 export function styleBarreNavigation(e) {
 	e.style.width = "100vw";
 	e.style.order = "-1";
@@ -41,6 +61,17 @@ export function styleBtnModifIntro(e) {
 	e.style.border = "0";
 	e.style.gap = "10px";
 	e.style.backgroundColor = "rgb(229, 229, 229)";
+}
+export function buildIcon(e) {
+	e.textContent = "delete";
+	e.classList.add("material-icons");
+	e.style.backgroundColor = "black";
+	e.style.color = "white";
+	e.style.fontSize = "16px";
+	e.style.position = "absolute";
+	e.style.top = "5px";
+	e.style.right = "5px";
+	e.setAttribute("id", "delete");
 }
 
 export function styleBtnModif(e) {
