@@ -208,9 +208,10 @@ if (accessToken != null) {
 					allImgModal.push(creatDiv);
 					//click pour suppr l'image
 					iconPoubelle.addEventListener("click", () => {
-						const id = creatDiv.id;
+						const id = img.id;
+						console.log(img);
 						supprElement(id);
-						creatDiv.remove();
+						// creatDiv.remove();
 					});
 				});
 			})
@@ -242,9 +243,7 @@ if (accessToken != null) {
 	btnCloseModale.addEventListener("click", closeModal);
 	console.log(accessToken);
 	async function supprElement(id) {
-		const newId = id.replace("projet", "");
-
-		await fetch(`http://localhost:5678/api/works/${Number(newId)}`, {
+		await fetch(`http://localhost:5678/api/works/${id}`, {
 			method: "DELETE",
 
 			headers: {
@@ -255,6 +254,7 @@ if (accessToken != null) {
 			.then((response) => {
 				if (response.ok) {
 					console.log("Suppression effectuée avec succès !");
+					fetch("http://localhost:5678/api/works");
 				} else {
 					console.log("Une erreur s'est produite lors de la suppression.");
 				}
@@ -359,15 +359,6 @@ if (accessToken != null) {
 		btnAddImg.style.display = "none";
 	});
 
-	const formAddImg = document.getElementById("form-modale");
-	formAddImg.addEventListener("submit", (event) => {
-		event.preventDefault();
-		const formData = new FormData(formAddImg);
-		const data = Object.fromEntries(formData);
-		console.log(data);
-	});
-	console.log(data);
-
 	// affiche l'image quand elle est selectonnée dans le modale
 	let imgFormModal = document.getElementById("upload-image");
 	imgFormModal.addEventListener("change", async function (e) {
@@ -387,50 +378,25 @@ if (accessToken != null) {
 			divImgForm.appendChild(imgUpload);
 			imgUpload.style.maxHeight = "10rem;";
 			console.log(imgUpload);
-
-			// Utiliser FileReader pour lire le fichier
-			const reader = new FileReader();
-			reader.onload = async (event) => {
-				const result = event.target.result;
-				// console.log(result);
-
-				// Accéder aux propriétés des fichiers ici, par exemple :
-
-				const inputFileImage = document.getElementById("upload");
-
-				const fileTImage = inputFileImage.files[0];
-
-				const resultImage = await read(fileTImage);
-
-				// Vérifier que tous les champs du formulaire sont remplis avant d'appeler addElementsModal
-				if (resultTitle && resultImage) {
-					// Appeler la fonction addElementsModal avec les résultats
-					await addElementsModal(resultImage);
-				}
-			};
-
-			reader.readAsDataURL(file[0]);
 		}
 	});
+	const formAddImg = document.getElementById("form-modale");
+	formAddImg.addEventListener("submit", async (event) => {
+		event.preventDefault();
+		const newImgModal = document.getElementById("upload-image").files[0]; // Utiliser files[0] pour obtenir le fichier sélectionné
+		const newTitleModal = document.getElementById("name").value;
+		const newCateModal = document.getElementById("pet-select").value;
+		const formData = new FormData();
+		formData.append("image", newImgModal);
+		formData.append("title", newTitleModal);
+		formData.append("category", newCateModal);
 
-	// Fonction de lecture des fichiers
-	const read = (file) =>
-		new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.onload = (event) => resolve(event.target.result);
-			reader.onerror = reject;
-			reader.readAsDataURL(file);
-		});
-
-	async function addElementsModal(resultImage) {
-		const titre = document.getElementById("name").value;
-		const imgUpload = document.getElementById("upload").value;
-		await fetch(`http://localhost:5678/api/works`, {
+		await fetch("http://localhost:5678/api/works", {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
-			body: JSON.stringify({ titre, resultImage }),
+			body: formData,
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -438,18 +404,13 @@ if (accessToken != null) {
 				imageElement.src = data.image;
 
 				const titreElement = document.createElement("h2");
-				titreElement.textContent = titre;
-				console.log(titre);
-				console.log("image", resultImage);
+				titreElement.textContent = formData.get("title");
+				console.log(formData.get("title"));
+				console.log("image", formData.get("image"));
 				sectionImages.appendChild(titreElement);
 				sectionImages.appendChild(imageElement);
 			})
 			.catch((error) => console.log(error.message));
-	}
-
-	btnCheckAddImgModal.addEventListener("click", () => {
-		// Appeler la fonction addElementsModal avec les résultats
-		addElementsModal();
 	});
 } else {
 	console.log(localStorage);
