@@ -76,7 +76,7 @@ async function getWorks() {
 				const creatImg = document.createElement("img");
 				const creatDiv = document.createElement("div");
 				const title = document.createElement("h3");
-				creatImg.textContent = img.title;
+				title.textContent = img.title;
 				creatImg.src = img.imageUrl;
 				const idImg = img.categoryId;
 				sectionImages.appendChild(creatDiv);
@@ -96,7 +96,7 @@ function generateWorksToDisplay(categoryId = null) {
 			const creatImg = document.createElement("img");
 			const creatDiv = document.createElement("div");
 			const title = document.createElement("h3");
-			creatImg.textContent = img.title;
+			title.textContent = img.title;
 			creatImg.src = img.imageUrl;
 			sectionImages.appendChild(creatDiv);
 			creatDiv.appendChild(creatImg);
@@ -109,7 +109,7 @@ function generateWorksToDisplay(categoryId = null) {
 				const creatImg = document.createElement("img");
 				const creatDiv = document.createElement("div");
 				const title = document.createElement("h3");
-				creatImg.textContent = img.title;
+				title.textContent = img.title;
 				creatImg.src = img.imageUrl;
 				sectionImages.appendChild(creatDiv);
 				creatDiv.appendChild(creatImg);
@@ -359,9 +359,19 @@ if (accessToken != null) {
 		btnAddImg.style.display = "none";
 	});
 
+	// const read = (file) =>
+	// 	new Promise((resolve, reject) => {
+	// 		const reader = new FileReader();
+	// 		reader.onload = (event) => resolve(event.target.result);
+	// 		reader.onerror = reject;
+	// 		reader.readAsDataURL(file);
+	// 	});
+
 	// affiche l'image quand elle est selectonnée dans le modale
-	let imgFormModal = document.getElementById("upload-image");
-	imgFormModal.addEventListener("change", async function (e) {
+	const formAddImg = document.getElementById("form-modale");
+	// let imgFormModal = document.getElementById("upload-image");
+	const divImgForm = document.getElementById("upload");
+	divImgForm.addEventListener("change", async function (e) {
 		let file = e.target.files;
 		const fileLength = file.length;
 
@@ -373,21 +383,31 @@ if (accessToken != null) {
 			const imgSource = URL.createObjectURL(file[0]);
 			imgUpload.src = imgSource;
 
-			let divImgForm = document.getElementById("upload");
 			divImgForm.innerHTML = "";
 			divImgForm.appendChild(imgUpload);
 			imgUpload.style.maxHeight = "10rem;";
 			console.log(imgUpload);
 		}
 	});
-	const formAddImg = document.getElementById("form-modale");
-	formAddImg.addEventListener("submit", async (event) => {
+
+	// btnCheckAddImgModal.addEventListener("submit", async function (event) {
+	formAddImg.addEventListener("submit", async function (event) {
+		const file = formAddImg.files[0];
+		const reader = new FileReader();
+		reader.addEventListener("load", () => {
+			console.log(reader.result);
+		});
+		reader.readAsDataURL(file);
 		event.preventDefault();
-		const newImgModal = document.getElementById("upload-image").files[0]; // Utiliser files[0] pour obtenir le fichier sélectionné
+		const uploadImageElement = document.getElementById("upload-image");
+
+		// Un fichier a été sélectionné
+		const selectedFile = uploadImageElement.files[0];
+		const result = await read(selectedFile);
 		const newTitleModal = document.getElementById("name").value;
 		const newCateModal = document.getElementById("pet-select").value;
 		const formData = new FormData();
-		formData.append("image", newImgModal);
+		formData.append("image", result);
 		formData.append("title", newTitleModal);
 		formData.append("category", newCateModal);
 
@@ -395,20 +415,13 @@ if (accessToken != null) {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
+				// Ajouter les en-têtes nécessaires pour l'envoi de données au serveur
 			},
 			body: formData,
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				const imageElement = document.createElement("img");
-				imageElement.src = data.image;
-
-				const titreElement = document.createElement("h2");
-				titreElement.textContent = formData.get("title");
-				console.log(formData.get("title"));
-				console.log("image", formData.get("image"));
-				sectionImages.appendChild(titreElement);
-				sectionImages.appendChild(imageElement);
+				console.log(data);
 			})
 			.catch((error) => console.log(error.message));
 	});
@@ -416,3 +429,13 @@ if (accessToken != null) {
 	console.log(localStorage);
 	console.log("non non");
 }
+
+// const imageElement = document.createElement("img");
+// imageElement.src = data.image;
+
+// const titreElement = document.createElement("h2");
+// titreElement.textContent = formData.get("title");
+// console.log(formData.get("title"));
+// console.log("image", formData.get("image"));
+// sectionImages.appendChild(titreElement);
+// sectionImages.appendChild(imageElement);
