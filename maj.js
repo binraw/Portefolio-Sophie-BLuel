@@ -245,7 +245,6 @@ if (accessToken != null) {
 	async function supprElement(id) {
 		await fetch(`http://localhost:5678/api/works/${id}`, {
 			method: "DELETE",
-
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${accessToken}`,
@@ -254,7 +253,16 @@ if (accessToken != null) {
 			.then((response) => {
 				if (response.ok) {
 					console.log("Suppression effectuée avec succès !");
-					fetch("http://localhost:5678/api/works");
+					fetch("http://localhost:5678/api/works")
+						.then((response) => response.json())
+						.then((works) => {
+							// Mettre à jour les données sur la page
+							// en appelant à nouveau la fonction callImagesModale()
+							sectionImagesModale.innerHTML = "";
+							sectionImages.innerHTML = "";
+							callImagesModale();
+							getWorks();
+						});
 				} else {
 					console.log("Une erreur s'est produite lors de la suppression.");
 				}
