@@ -18,6 +18,7 @@ const sectionImages = document.querySelector(".gallery");
 const sectionImagesModale = document.getElementById("gallery");
 let arrayCategories = [];
 let worksToDisplay = [];
+const newCateModal = document.getElementById("pet-select");
 // style background
 body.style.backgroundColor = "#E5E5E5";
 // style login lien et info
@@ -47,6 +48,10 @@ async function getCategories() {
 				buildContenerCategories(creatCategories);
 				//boutons
 
+				const createOptionModal = document.createElement("option");
+				newCateModal.appendChild(createOptionModal);
+				createOptionModal.textContent = cate.name;
+				createOptionModal.value = cate.id;
 				buildBtnCategorie(creatCate);
 				//creation hover
 				creatCate.addEventListener("mouseover", (event) => {
@@ -205,6 +210,7 @@ if (accessToken != null) {
 						supprElement(id);
 						// creatDiv.remove();
 					});
+					sectionImagesModale.appendChild(creatDiv);
 				});
 			})
 		);
@@ -215,16 +221,18 @@ if (accessToken != null) {
 	const modale = document.getElementById("modal1");
 	const btnCloseModale = document.getElementById("close");
 	const btnCheckAddImgModal = document.getElementById("check");
+	const reloadModalImg = function () {
+		// Supprimer les anciens éléments de la modal
+		sectionImagesModale.innerHTML = "";
+		callImagesModale();
+	};
 	const openModal = function () {
 		modale.style.display = null;
 		galleryModalClick.style.display = "none";
 		btnCheckAddImgModal.style.display = "none";
 		btnAddImg.style.display = null;
 		divUploadImg.style.display = "none";
-		sectionImagesModale.innerHTML = "";
-		allImgModal.forEach((img) => {
-			sectionImagesModale.appendChild(img);
-		});
+		reloadModalImg();
 	};
 	const closeModal = function () {
 		modale.style.display = "none";
@@ -246,10 +254,8 @@ if (accessToken != null) {
 					fetch("http://localhost:5678/api/works")
 						.then((response) => response.json())
 						.then((works) => {
-							// Mettre à jour les données sur la page
-							// en appelant à nouveau la fonction callImagesModale()
-							sectionImagesModale.innerHTML = "";
 							sectionImages.innerHTML = "";
+							sectionImagesModale.innerHTML = "";
 							callImagesModale();
 							getWorks();
 						});
@@ -323,6 +329,8 @@ if (accessToken != null) {
 			divUploadImg.style.display = "none";
 			btnCheckAddImgModal.style.display = "none";
 			sectionImagesModale.style.display = null;
+			sectionImagesModale.innerHTML = "";
+			reloadModalImg();
 			btnAddImg.textContent = "Ajouter une photo";
 			btnAddImg.style.backgroundColor = "#1d6154";
 			titleContenerModal.textContent = "Galerie photo";
@@ -379,11 +387,12 @@ if (accessToken != null) {
 		event.preventDefault();
 		const file = uploadImageElement.files[0];
 		const newTitleModal = document.getElementById("name").value;
-		const newCateModal = document.getElementById("pet-select").value;
+		const addCategorie = document.getElementById("pet-select").value;
+
 		const formData = new FormData();
 		formData.append("image", file);
 		formData.append("title", newTitleModal);
-		formData.append("category", newCateModal);
+		formData.append("category", addCategorie);
 
 		await fetch("http://localhost:5678/api/works", {
 			method: "POST",
@@ -395,7 +404,10 @@ if (accessToken != null) {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
+				sectionImages.innerHTML = "";
+				getWorks();
+				sectionImagesModale.innerHTML = "";
+				callImagesModale();
 			})
 			.catch((error) => console.log(error.message));
 	});
