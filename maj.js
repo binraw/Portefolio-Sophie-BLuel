@@ -383,6 +383,10 @@ if (accessToken != null) {
 
 	// btnCheckAddImgModal.addEventListener("submit", async function (event) {
 	const uploadImageElement = document.getElementById("upload-image");
+	const addTextModal = document.getElementById("add-text-modal");
+	const addIconModal = document.getElementById("add-icon-modal");
+	const addFormatModal = document.getElementById("add-info-format");
+	addFormatModal.textContent = "jpg, png : 4mo max";
 	formAddImg.addEventListener("submit", async function (event) {
 		event.preventDefault();
 		const file = uploadImageElement.files[0];
@@ -408,6 +412,13 @@ if (accessToken != null) {
 				getWorks();
 				sectionImagesModale.innerHTML = "";
 				callImagesModale();
+				document.getElementById("name").value = ""; // Réinitialiser la valeur du champ de texte 'name'
+				document.getElementById("pet-select").value = ""; // Réinitialiser la valeur du champ de sélection 'pet-select'
+				divImgForm.innerHTML = "";
+				divImgForm.appendChild(uploadImageElement);
+				divImgForm.appendChild(addTextModal);
+				divImgForm.appendChild(addIconModal);
+				divImgForm.appendChild(addFormatModal);
 			})
 			.catch((error) => console.log(error.message));
 	});

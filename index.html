@@ -85,8 +85,13 @@
 						<div id="gallery-modale-click">
 							<form id="form-modale" action="#" method="post">
 								<div id="upload">
-									<span class="material-symbols-outlined"> image </span>
-									<label for="upload-image" class="title-upload-image"
+									<span id="add-icon-modal" class="material-symbols-outlined">
+										image
+									</span>
+									<label
+										id="add-text-modal"
+										for="upload-image"
+										class="title-upload-image"
 										>+ Ajouter photo</label
 									>
 									<input
@@ -97,7 +102,9 @@
 										accept=".jpg, .jpeg, .png"
 										required
 									/>
-									<p class="sous-titre">jpg, png : 4mo max</p>
+									<p id="add-info-format" class="sous-titre">
+										jpg, png : 4mo max
+									</p>
 								</div>
 
 								<label for="name">Nom</label>
