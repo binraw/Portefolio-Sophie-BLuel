@@ -78,12 +78,10 @@ async function getWorks() {
 				const title = document.createElement("h3");
 				title.textContent = img.title;
 				creatImg.src = img.imageUrl;
-				const idImg = img.categoryId;
 				sectionImages.appendChild(creatDiv);
 				creatDiv.appendChild(creatImg);
 				creatDiv.appendChild(title);
 				createAll.push(creatDiv);
-				console.log(idImg);
 			});
 		})
 	);
@@ -122,7 +120,7 @@ function generateWorksToDisplay(categoryId = null) {
 
 getWorks();
 getCategories();
-console.log(worksToDisplay);
+
 const btnAll = document.createElement("button");
 creatCategories.appendChild(btnAll);
 //Bouton Tous
@@ -164,13 +162,11 @@ if (accessToken != null) {
 		localStorage.clear();
 	});
 
-	console.log(localStorage);
 	// --------- barre modification ----------------
 	const header = document.querySelector("header");
 	const navModification = document.createElement("div");
 	header.appendChild(navModification);
 	styleBarreNavigation(navModification);
-
 	styleContenerHeader(header);
 	const icon = document.createElement("i");
 	icon.classList.add("fa", "fa-edit");
@@ -178,7 +174,6 @@ if (accessToken != null) {
 	const publication = document.createElement("button");
 	stylePublicationButton(publication);
 	styleEditionButton(editionMode);
-
 	editionMode.appendChild(icon);
 
 	icon.style.order = "-1";
@@ -228,10 +223,8 @@ if (accessToken != null) {
 		galleryModalClick.style.display = "none";
 		btnCheckAddImgModal.style.display = "none";
 		btnAddImg.style.display = null;
-
 		divUploadImg.style.display = "none";
 		sectionImagesModale.innerHTML = "";
-
 		allImgModal.forEach((img) => {
 			sectionImagesModale.appendChild(img);
 		});
@@ -241,7 +234,7 @@ if (accessToken != null) {
 	};
 
 	btnCloseModale.addEventListener("click", closeModal);
-	console.log(accessToken);
+
 	async function supprElement(id) {
 		await fetch(`http://localhost:5678/api/works/${id}`, {
 			method: "DELETE",
@@ -286,9 +279,7 @@ if (accessToken != null) {
 	styleBtnModifIntro(btnModifIntro);
 	description.style.display = "flex";
 	description.style.flexWrap = "wrap";
-
 	divForButton.style.width = "100%";
-
 	const iconDescrip = document.createElement("i");
 	iconDescrip.classList.add("fa", "fa-edit");
 	iconDescrip.style.order = "-1";
@@ -305,7 +296,6 @@ if (accessToken != null) {
 	const btnModif = document.createElement("button");
 	styleBtnModif(btnModif);
 	btnModif.appendChild(iconElement);
-
 	iconElement.style.order = "-1";
 	modification.append(btnModif);
 
@@ -322,9 +312,7 @@ if (accessToken != null) {
 		galleryModalClick.style.borderBottom = "1px solid grey";
 		galleryModalClick.style.width = "50%";
 		galleryModalClick.style.height = "70%";
-
 		galleryModalClick.appendChild(formModal);
-
 		const btnArrowBackModal = document.createElement("button");
 		styleBtnArrowModale(btnArrowBackModal);
 		const arrowBackModal = document.createElement("i");
@@ -350,7 +338,6 @@ if (accessToken != null) {
 			modalCreated = true;
 			galleryModalClick.style.display = null;
 			btnCheckAddImgModal.style.display = null;
-
 			titleContenerModal.textContent = "Ajout photo";
 			divUploadImg.style.display = null;
 		} else {
@@ -377,7 +364,6 @@ if (accessToken != null) {
 
 	// affiche l'image quand elle est selectonnée dans le modale
 	const formAddImg = document.getElementById("form-modale");
-	// let imgFormModal = document.getElementById("upload-image");
 	const divImgForm = document.getElementById("upload");
 	divImgForm.addEventListener("change", async function (e) {
 		let file = e.target.files;
@@ -400,13 +386,13 @@ if (accessToken != null) {
 
 	// btnCheckAddImgModal.addEventListener("submit", async function (event) {
 	formAddImg.addEventListener("submit", async function (event) {
+		event.preventDefault();
 		const file = formAddImg.files[0];
 		const reader = new FileReader();
 		reader.addEventListener("load", () => {
 			console.log(reader.result);
 		});
 		reader.readAsDataURL(file);
-		event.preventDefault();
 		const uploadImageElement = document.getElementById("upload-image");
 
 		// Un fichier a été sélectionné
