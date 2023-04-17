@@ -131,10 +131,7 @@ buildBtnCategorie(btnAll);
 // // creation click
 btnAll.addEventListener("click", () => {
 	sectionImages.innerHTML = "";
-
-	createAll.forEach((img) => {
-		sectionImages.appendChild(img);
-	});
+	getWorks();
 });
 
 //creation hover
@@ -354,14 +351,6 @@ if (accessToken != null) {
 		btnAddImg.style.display = "none";
 	});
 
-	// const read = (file) =>
-	// 	new Promise((resolve, reject) => {
-	// 		const reader = new FileReader();
-	// 		reader.onload = (event) => resolve(event.target.result);
-	// 		reader.onerror = reject;
-	// 		reader.readAsDataURL(file);
-	// 	});
-
 	// affiche l'image quand elle est selectonnée dans le modale
 	const formAddImg = document.getElementById("form-modale");
 	const divImgForm = document.getElementById("upload");
@@ -385,23 +374,14 @@ if (accessToken != null) {
 	});
 
 	// btnCheckAddImgModal.addEventListener("submit", async function (event) {
+	const uploadImageElement = document.getElementById("upload-image");
 	formAddImg.addEventListener("submit", async function (event) {
 		event.preventDefault();
-		const file = formAddImg.files[0];
-		const reader = new FileReader();
-		reader.addEventListener("load", () => {
-			console.log(reader.result);
-		});
-		reader.readAsDataURL(file);
-		const uploadImageElement = document.getElementById("upload-image");
-
-		// Un fichier a été sélectionné
-		const selectedFile = uploadImageElement.files[0];
-		const result = await read(selectedFile);
+		const file = uploadImageElement.files[0];
 		const newTitleModal = document.getElementById("name").value;
 		const newCateModal = document.getElementById("pet-select").value;
 		const formData = new FormData();
-		formData.append("image", result);
+		formData.append("image", file);
 		formData.append("title", newTitleModal);
 		formData.append("category", newCateModal);
 
@@ -423,13 +403,3 @@ if (accessToken != null) {
 	console.log(localStorage);
 	console.log("non non");
 }
-
-// const imageElement = document.createElement("img");
-// imageElement.src = data.image;
-
-// const titreElement = document.createElement("h2");
-// titreElement.textContent = formData.get("title");
-// console.log(formData.get("title"));
-// console.log("image", formData.get("image"));
-// sectionImages.appendChild(titreElement);
-// sectionImages.appendChild(imageElement);

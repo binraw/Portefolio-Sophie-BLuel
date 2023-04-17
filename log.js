@@ -35,7 +35,7 @@ form.addEventListener("submit", (event) => {
 			console.log(data.access_token);
 			// sessionStorage.setItem("access_token", data.access_token);
 
-			window.location.href = "index.html?access_token=" + data.access_token;
+			window.location.href = "index.html";
 		})
 		.catch((error) => console.error(error));
 });
