@@ -72,8 +72,8 @@ async function getCategories() {
 		})
 	);
 }
-const createAll = [];
 async function getWorks() {
+	const createAll = [];
 	await fetch(`http://localhost:5678/api/works`).then((response) =>
 		response.json().then((works) => {
 			worksToDisplay = works;
@@ -208,7 +208,6 @@ if (accessToken != null) {
 						const id = img.id;
 						console.log(img);
 						supprElement(id);
-						// creatDiv.remove();
 					});
 					sectionImagesModale.appendChild(creatDiv);
 				});
@@ -402,7 +401,6 @@ if (accessToken != null) {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
-				// Ajouter les en-têtes nécessaires pour l'envoi de données au serveur
 			},
 			body: formData,
 		})
