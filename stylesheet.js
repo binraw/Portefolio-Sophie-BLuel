@@ -92,3 +92,11 @@ export function styleBtnArrowModale(e) {
 	e.style.backgroundColor = "white";
 	e.style.border = "0";
 }
+export function styleHover(e) {
+	e.addEventListener("mouseover", () => {
+		e.style.color = "#b1663c";
+	});
+	e.addEventListener("mouseout", () => {
+		e.style.color = "black";
+	});
+}

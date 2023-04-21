@@ -9,6 +9,7 @@ import {
 	buildIcon,
 	styleBtnModif,
 	styleBtnArrowModale,
+	styleHover,
 } from "./stylesheet.js";
 const body = document.querySelector("body");
 const log = document.getElementById("login");
@@ -29,7 +30,9 @@ information.style.textDecoration = "none";
 information.style.color = "black";
 log.style.color = "black";
 logout.style.color = "black";
-
+styleHover(log);
+styleHover(logout);
+styleHover(information);
 let data = window.localStorage.getItem("filter");
 const creatCategories = document.querySelector(".categories");
 const creatCateId = 0;
@@ -72,8 +75,8 @@ async function getCategories() {
 		})
 	);
 }
+const createAll = [];
 async function getWorks() {
-	const createAll = [];
 	await fetch(`http://localhost:5678/api/works`).then((response) =>
 		response.json().then((works) => {
 			worksToDisplay = works;
@@ -311,7 +314,12 @@ if (accessToken != null) {
 	galleryModalClick.style.width = "90%";
 	function createObjtModale() {
 		galleryModal.style.display = "none";
-		galleryModalClick.style.borderBottom = "1px solid grey";
+		formModal.style.borderBottom = "1px solid grey";
+		formModal.style.paddingBottom = "2rem";
+		btnCheckAddImgModal.style.margin = "2rem";
+		btnCheckAddImgModal.style.marginLeft = "4rem";
+		btnCheckAddImgModal.style.position = "absolute";
+		btnCheckAddImgModal.style.top = "31rem";
 		galleryModalClick.style.width = "50%";
 		galleryModalClick.style.height = "70%";
 		galleryModalClick.appendChild(formModal);

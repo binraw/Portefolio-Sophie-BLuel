@@ -10,6 +10,7 @@ information.style.color = "black";
 log.style.color = "black";
 memo.style.textDecoration = "none";
 memo.style.color = "black";
+
 /* recuperation d'une fonction qui ecoute l'envoi du form avec enregistrement
 de l'email et passeword et transformer en json puis recuperation de ses donnes 
 puis changement en json puis stoker ses donnees dans acces puis envoie sur l'autre page avec acces token*/
@@ -33,7 +34,6 @@ form.addEventListener("submit", (event) => {
 		.then((data) => {
 			localStorage.setItem("access_token", data.token);
 			console.log(data.access_token);
-			// sessionStorage.setItem("access_token", data.access_token);
 
 			window.location.href = "index.html";
 		})
