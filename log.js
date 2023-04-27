@@ -34,8 +34,14 @@ form.addEventListener("submit", (event) => {
 		.then((data) => {
 			localStorage.setItem("access_token", data.token);
 			console.log(data.access_token);
-
-			window.location.href = "index.html";
+			if (emailValue == "sophie.bluel@test.tld" && password == "S0phie") {
+				window.location.href = "index.html";
+			} else {
+				document.getElementById("error-message").style.display = "block";
+			}
 		})
-		.catch((error) => console.error(error));
+		.catch((error) => {
+			console.error(error);
+			document.getElementById("error-message").style.display = "block";
+		});
 });

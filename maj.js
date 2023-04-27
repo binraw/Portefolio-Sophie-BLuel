@@ -430,5 +430,4 @@ if (accessToken != null) {
 	});
 } else {
 	console.log(localStorage);
-	console.log("non non");
 }
